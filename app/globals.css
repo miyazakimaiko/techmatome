@@ -1,17 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@/styles/nav.css";
+@import "@/styles/checkbox.css";
 
 body {
-  font-size: 0.875rem; /* 14px */
-  line-height: 1.25rem; /* 20px */
+  font-family: 'Noto Sans JP', system-ui, sans-serif;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  padding: 2rem 1.25rem;
+  padding: 1.65rem 1rem;
   text-align: center;
+  width: 100%;
   max-width: 43.75rem;
 }
 
@@ -30,7 +32,7 @@ main {
   color: #333333;
   border-radius: 0px;
   padding: 8px 10px;
-  font-weight: bold;
+  font-weight: 500;
   border: 2px solid #333333;
   transition: 0.3s;
   box-shadow: 2px 2px 0px 0px rgba(51, 51, 51, 1);
@@ -40,6 +42,10 @@ main {
 .subscribe-button:hover {
   box-shadow: 0 0 #333;
   background-color: #11F7E7;
+}
+
+.subscribe-button[disabled] {
+  cursor: not-allowed;
 }
 
 .privacy,
