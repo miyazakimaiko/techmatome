@@ -41,9 +41,9 @@ export default function Header() {
             + (mobileNavOpen ? " mobile-nav-open" : "")
           }
         >
-          <span className="block h-[2px] w-full bg-black transition-all ease-in-out duration-[420ms] absolute top-0"></span>
-          <span className="block h-[2px] w-full bg-black transition-all ease-in-out duration-[420ms] absolute"></span>
-          <span className="block h-[2px] w-full bg-black transition-all ease-in-out duration-[420ms] absolute bottom-0"></span>
+          <span className="block h-[2px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute top-0"></span>
+          <span className="block h-[2px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute"></span>
+          <span className="block h-[2px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute bottom-0"></span>
         </label>
       </header>
       {/* nav for mobile */}
