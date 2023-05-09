@@ -19,16 +19,16 @@ export default function Home() {
   )
 
   const emojis = (
-    <div className="w-full max-w-[300px] m-auto flex justify-evenly text-5xl py-8">
-      <div className="hover:animate-bounce">⏱</div>
-      <span className="hover:animate-bounce">📱</span>
-      <span className="hover:animate-bounce">👨🏻‍💻</span>
-      <span className="hover:animate-bounce">💡</span>
+    <div className="w-full max-w-[300px] m-auto flex justify-evenly text-5xl py-10">
+      <div className="animate-bounce">⏱</div>
+      <span className="animate-bounce animation-bounce-delay">📱</span>
+      <span className="animate-bounce">👨🏻‍💻</span>
+      <span className="animate-bounce animation-bounce-delay">💡</span>
     </div>
   )
 
   const introText = (
-    <div className="text-center pb-8 sm:leading-7">
+    <div className="text-center pb-8">
       <p className="pb-6">
         最新記事を読む時間がない。<strong>英語だと尚更。</strong><br/>TiROは、そんな<strong>Geekのための無料メルマガ</strong>です。
       </p>

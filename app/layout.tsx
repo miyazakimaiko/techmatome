@@ -16,7 +16,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin=""/>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet"/>
       </head>
-      <body className="flex min-h-screen flex-col items-center justify-between text-base">
+      <body className="flex min-h-screen flex-col items-center justify-between text-base leading-7">
         {children}
         <Footer/>
       </body>

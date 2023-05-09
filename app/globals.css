@@ -1,13 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "@/styles/nav.css";
-@import "@/styles/checkbox.css";
+
+/* -------------------------------------------*
+  All Pages
+ *--------------------------------------------*/
 
 body {
   font-family: 'Noto Sans JP', system-ui, sans-serif;
 }
-
 main {
   display: flex;
   flex-direction: column;
@@ -16,12 +17,10 @@ main {
   width: 100%;
   max-width: 43.75rem;
 }
-
 .page-title {
   font-size: 1.15rem;
   padding-bottom: 1.5rem;
 }
-
 .subscribe-button {
   display: flex;
   align-items: center;
@@ -38,39 +37,98 @@ main {
   box-shadow: 2px 2px 0px 0px rgba(51, 51, 51, 1);
   background-color: #ffffff;
 }
-
 .subscribe-button:hover {
   box-shadow: 0 0 #333;
   background-color: #11F7E7;
 }
-
 .subscribe-button[disabled] {
   cursor: not-allowed;
 }
-
 .privacy,
 .terms {
   text-align: left;
 }
-
 .privacy h2,
 .terms h2 {
   font-size: 1.1rem;
   margin: 2rem 0rem 1rem 0rem;
   text-decoration: underline;
 }
-
 .privacy h3,
 .terms h3 {
   margin: 1rem 0rem;
 }
-
 .privacy ol,
 .terms ol {
   list-style: auto;
 }
-
 .privacy ol li,
 .terms ol li {
   margin-left: 1rem;
+}
+
+/* -------------------------------------------*
+  Navigation 
+ *--------------------------------------------*/
+
+.mobile-nav-open span:nth-child(1) {
+  top: 7px;
+  rotate: -150grad;
+}
+.mobile-nav-open span:nth-child(3) {
+  bottom: 7px;
+  transform: rotate(-45deg);
+}
+.mobile-nav-open span:nth-child(2) {
+  transform: rotate(-45deg);
+  background: rgba(255, 255, 255, 0);
+  width: 1px;
+}
+
+/* -------------------------------------------*
+  Top page 
+ *--------------------------------------------*/
+
+ .animation-bounce-delay {
+  animation-delay: 0.2s;
+}
+
+/* -------------------------------------------*
+  Subscribing page 
+ *--------------------------------------------*/
+
+input[type="checkbox"] { 
+  display: none; 
+}
+input[type="checkbox"] + label {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+input[type="checkbox"] + label:last-child { 
+  margin-bottom: 0; 
+}
+input[type="checkbox"] + label:before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: .6;
+  transition: all .3s, border-color .08s;
+}
+input[type="checkbox"]:checked + label:before {
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
