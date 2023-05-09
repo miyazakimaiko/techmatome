@@ -1,0 +1,21 @@
+{
+  "name": "@rest-api-sql/functions",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "sst bind vitest",
+    "typecheck": "tsc -noEmit"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/aws-lambda": "^8.10.115",
+    "@types/node": "^20.1.0",
+    "sst": "^2.8.6",
+    "vitest": "^0.31.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-rds-data": "^3.328.0",
+    "kysely": "^0.24.2",
+    "kysely-data-api": "^0.2.0"
+  }
+}
