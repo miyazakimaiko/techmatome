@@ -1,16 +1,11 @@
 import Header from '@/components/header';
 
 export default function Privacy() {
-
-  const title = (
-    <h1 className="page-title">プライバシーポリシー</h1>
-  )
-
   return (
     <>
       <Header/>
       <main>
-        {title}
+        <h1 className="page-title">プライバシーポリシー</h1>
         <article className="privacy">
           <section>
             株式会社グルーヴィーメディア（以下，「当社」といいます。）は，本ウェブサイト上で提供するサービス（以下,「本サービス」といいます。）における，ユーザーの個人情報の取扱いについて，以下のとおりプライバシーポリシー（以下，「本ポリシー」といいます。）を定めます。

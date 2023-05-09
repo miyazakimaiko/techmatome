@@ -1,8 +1,9 @@
 import fs from "fs";
 import Markdown from "markdown-to-jsx";
 import matter from "gray-matter";
-import getArticlesMetadata from "@/functions/getArticlesMetadata";
+import getArticlesMetadata from "@/helpers/getArticlesMetadata";
 import Header from "@/components/header";
+import SubscribeForm from "@/components/subscribeForm";
 
 const getArticleContent = (slug: string) => {
   const folder = "articles/";
@@ -27,10 +28,10 @@ export default function Article (props: any) {
       <Header/>
       <main>
         <h1 className="page-title">TiRO テックニュース {slug}</h1>
-
-        <article className="prose">
+        <article className="text-left">
           <Markdown>{post.content}</Markdown>
         </article>
+        <SubscribeForm/>
       </main>
     </>
   );

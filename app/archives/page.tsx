@@ -1,7 +1,7 @@
 import ArticleLink from '@/components/articleLink'
 import Header from '@/components/header'
 import SubscribeForm from '@/components/subscribeForm'
-import getArticlesMetadata from '@/functions/getArticlesMetadata'
+import getArticlesMetadata from '@/helpers/getArticlesMetadata'
 
 export default function Archives() {
 
