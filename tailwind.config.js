@@ -15,6 +15,9 @@ module.exports = {
       '4xl': '2.441rem',
       '5xl': '3.052rem',
     },
+    colors: {
+      themeBlue: "#18F7E6",
+    }
   },
   plugins: [],
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArticleMetadata } from "@/interfaces/ArticleMetadata";
+import { ArticleMetadata } from "@/interfaces/articleMetadata";
 
 
 export default function ArticleLink(props: ArticleMetadata) {
