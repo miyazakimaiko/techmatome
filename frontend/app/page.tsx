@@ -1,4 +1,4 @@
-import SubscribeForm from '@/components/subscribeForm'
+import SubscribeSection from '@/components/subscribeSection'
 import Image from 'next/image'
 
 export default function Home() {
@@ -43,7 +43,7 @@ export default function Home() {
       {title}
       {emojis}
       {introText}
-      <SubscribeForm />
+      <SubscribeSection />
     </main>
   )
 }
