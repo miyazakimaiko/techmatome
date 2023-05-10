@@ -1,10 +1,10 @@
+import Link from "next/link"
 import getLatestArticleSlug from "@/helpers/getLatestArticleSlug"
-import Link from "next/link";
-import { BaseSyntheticEvent } from "react";
 
 export default function SubscribeForm() {
-
   const latestArticleSlug = getLatestArticleSlug();
+
+  // call API to find user
 
   return (
     <>

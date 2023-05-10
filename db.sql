@@ -1,5 +1,5 @@
 CREATE TABLE subscriber (
-	email_address varchar(255) NOT NULL,
+	email_address varchar(255) NOT NULL PRIMARY KEY,
 	verified int DEFAULT 0 NOT NULL,
 	tech_subscribed int NOT NULL,
 	web_subscribed int NOT NULL,

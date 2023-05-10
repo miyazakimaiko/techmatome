@@ -2,7 +2,9 @@ import { StackContext } from "sst/constructs"
 import { NextjsSite } from "sst/constructs"
 
 export function SiteStack({ stack }: StackContext) {
-  const site = new NextjsSite(stack, "site");
+  const site = new NextjsSite(stack, "site", {
+    path: "frontend",
+  });
 
   stack.addOutputs({
     SiteUrl: site.url,
