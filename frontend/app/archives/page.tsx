@@ -1,7 +1,7 @@
 import ArticleLink from '@/components/articleLink'
 import Header from '@/components/header'
-import SubscribeForm from '@/components/subscribeForm'
-import getArticlesMetadata from '@/helpers/getArticlesMetadata'
+import SubscribeSection from '@/components/subscribeSection'
+import getArticlesMetadata from '@/functions/getArticlesMetadata'
 
 export default function Archives() {
 
@@ -36,7 +36,7 @@ export default function Archives() {
         <h1 className="page-title">過去のメルマガ 一覧</h1>
         {emojis}
         {introText}
-        <SubscribeForm />
+        <SubscribeSection />
         <div className="py-16">{articleLinks}</div>
       </main>
     </>
