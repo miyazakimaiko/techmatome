@@ -6,7 +6,7 @@ export function AuroraApiStack({ stack }: StackContext) {
   const cluster = new RDS(stack, "Cluster", {
     engine: "postgresql11.13",
     defaultDatabaseName: DATABASE,
-  });
+  })
 
   const api = new Api(stack, "Api", {
     defaults: {
@@ -15,16 +15,18 @@ export function AuroraApiStack({ stack }: StackContext) {
       },
     },
     routes: {
-      "POST /find": "packages/functions/find.handler",
+      "GET /find": "packages/functions/find.handler",
       "POST /create": "packages/functions/create.handler",
-      "POST /update/{email}": "packages/functions/update.handler",
-      "POST /verify/{email}": "packages/functions/verify.handler",
+      "PATCH /update/{email}": "packages/functions/update.handler",
+      "GET /verify/{email}": "packages/functions/verify.handler",
     },
-  });
+  })
 
   stack.addOutputs({
     ApiEndpoint: api.url,
     SecretArn: cluster.secretArn,
     ClusterIdentifier: cluster.clusterIdentifier,
-  });
+  })
+
+  return { apiEndpoint: api.url }
 }

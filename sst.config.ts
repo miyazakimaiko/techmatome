@@ -10,7 +10,7 @@ export default {
     };
   },
   stacks(app) {
-    app.stack(SiteStack)
     app.stack(AuroraApiStack)
+    app.stack(SiteStack)
   },
 } satisfies SSTConfig;
