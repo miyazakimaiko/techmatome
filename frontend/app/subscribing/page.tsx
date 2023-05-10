@@ -1,30 +1,56 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { BaseSyntheticEvent, useState } from "react"
+import { BaseSyntheticEvent, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
-import addSubscriber from "@/helpers/addSubscriber"
+import addSubscriber from "@/functions/addSubscriber"
 import { Subscriber } from "@/interfaces/subscriber"
+import findSubscriber from "@/functions/findSubscriber"
 
 export default function Subscribing() {
   const searchParams = useSearchParams()
   const email = searchParams.get("email")
+
   const [subscribeToWeb, setSubscribeToWeb] = useState(false)
   const [subscribeToAi, setSubscribeToAi] = useState(false)
   const [processing, setProcessing] = useState(false)
-  const [error, setError] = useState(true)
+  const [error, setError] = useState(false)
+
+  // use https://react.dev/learn/reusing-logic-with-custom-hooks#custom-hooks-sharing-logic-between-components:~:text=You%20can%20extract%20the%20repetitive%20logic%20into%20this%20useFormInput%20custom%20Hook%3A
+
+  useEffect(() => {
+    const find = async (email: string) => {
+      try {
+        const subscriber = await findSubscriber(email)
+
+        console.log(subscriber.found)
+        console.log(subscriber.data)
+
+      } catch (e: any) {
+        setError(true)
+      } finally {
+        setProcessing(false)
+      }
+    }
+    if (email) find(email)
+  }, [email])
+  
 
   const subscribe = (event: BaseSyntheticEvent) => {
     event.preventDefault()
     try {
       setProcessing(true)
       addSubscriber({
-        email,
-        web: subscribeToWeb,
-        ai: subscribeToAi,
+        email_address: email,
+        tech_subscribed: 1,
+        web_subscribed: subscribeToWeb ? 1 : 0,
+        ai_subscribed: subscribeToAi ? 1 : 0,
       } as Subscriber)
+
     } catch (e: any) {
       setError(true)
+    } finally {
+      setProcessing(false)
     }
   }
 
