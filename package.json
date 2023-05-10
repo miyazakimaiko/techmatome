@@ -4,27 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "sst bind next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "sst bind next build",
+    "start": "sst bind next start",
+    "lint": "sst bind next lint"
   },
   "dependencies": {
     "@types/node": "18.16.3",
-    "@types/react": "18.2.5",
-    "@types/react-dom": "18.2.3",
-    "autoprefixer": "10.4.14",
-    "gray-matter": "^4.0.3",
-    "markdown-to-jsx": "^7.2.0",
-    "next": "13.4.0",
-    "postcss": "8.4.23",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
   },
   "devDependencies": {
-    "sst": "^2.8.6",
-    "aws-cdk-lib": "2.72.1",
-    "constructs": "10.1.156"
+    "constructs": "10.1.156",
+    "sst": "^2.8.6"
   }
 }
