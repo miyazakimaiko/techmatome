@@ -5,7 +5,7 @@ export async function handler(event: any) {
     const { email } = event.pathParameters
     const body = JSON.parse(event.body)
 
-    const updated = await TiroRds.db
+    await TiroRds.db
       .updateTable("subscriber")
       .set({
         tech_subscribed: body.tech_subscribed,
@@ -18,20 +18,13 @@ export async function handler(event: any) {
 
     return {
       statusCode: 200,
-      body: updated ?? "No user is updated",
+      body: JSON.stringify({ success: true }),
     }
   } catch (e: any) {
+    console.error(e)
     return {
       statusCode: 500,
       body: JSON.stringify({ error: e.message }),
     }
   }
-
 }
-
-// {
-//   "email_address": "test3@gmail.com",
-//   "tech_subscribed": 1,
-//   "web_subscribed": 1,
-//   "ai_subscribed": 1
-// }

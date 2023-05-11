@@ -3,54 +3,68 @@ import Link from "next/link"
 import Image from "next/image"
 import { BaseSyntheticEvent, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
-import addSubscriber from "@/functions/addSubscriber"
+import addUpdateSubscriber from "@/functions/addUpdateSubscriber"
 import { Subscriber } from "@/interfaces/subscriber"
 import findSubscriber from "@/functions/findSubscriber"
+import { FindSubscriberPayload } from "@/interfaces/findSubscriberPayload"
+import { useRouter } from "next/navigation"
 
 export default function Subscribing() {
   const searchParams = useSearchParams()
   const email = searchParams.get("email")
 
+  const [isSubscribed, setIsSubscribed] = useState(false)
   const [subscribeToWeb, setSubscribeToWeb] = useState(false)
   const [subscribeToAi, setSubscribeToAi] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState(false)
 
-  // use https://react.dev/learn/reusing-logic-with-custom-hooks#custom-hooks-sharing-logic-between-components:~:text=You%20can%20extract%20the%20repetitive%20logic%20into%20this%20useFormInput%20custom%20Hook%3A
+  const { push } = useRouter();
 
-  useEffect(() => {
-    const find = async (email: string) => {
-      try {
+  useEffect(() => {   
+    async function find(email: string): Promise<FindSubscriberPayload> {
+      return new Promise(async (resolve, reject) => {
         const subscriber = await findSubscriber(email)
-
-        console.log(subscriber.found)
-        console.log(subscriber.data)
-
-      } catch (e: any) {
-        setError(true)
-      } finally {
-        setProcessing(false)
-      }
+        if (subscriber) resolve(subscriber)
+        else reject()
+      })
     }
-    if (email) find(email)
-  }, [email])
-  
 
-  const subscribe = (event: BaseSyntheticEvent) => {
+    function setSubscribedCategory(subscriber: FindSubscriberPayload) {
+      setSubscribeToWeb(subscriber.data?.web_subscribed === 1)
+      setSubscribeToAi(subscriber.data?.ai_subscribed === 1)
+    }
+
+    if (email) {
+      find(email).then(
+        (subscriber) => {
+          setIsSubscribed(subscriber.found)
+          setSubscribedCategory(subscriber)
+        },
+        () => setError(true)
+      ).finally(() => setProcessing(false))
+    }
+  }, [email])
+
+  async function subscribe(event: BaseSyntheticEvent) {
     event.preventDefault()
+
     try {
       setProcessing(true)
-      addSubscriber({
+      const res = await addUpdateSubscriber(isSubscribed, {
         email_address: email,
         tech_subscribed: 1,
         web_subscribed: subscribeToWeb ? 1 : 0,
         ai_subscribed: subscribeToAi ? 1 : 0,
       } as Subscriber)
 
+      if (res.success) {
+        push(`/subscribed?email=${email}`)
+      }
+
     } catch (e: any) {
+      console.error({e})
       setError(true)
-    } finally {
-      setProcessing(false)
     }
   }
 
@@ -62,6 +76,7 @@ export default function Subscribing() {
         type="checkbox" 
         id="box-2"
         disabled={processing}
+        checked={subscribeToWeb}
         onChange={e => setSubscribeToWeb(e.target.checked)}
       />
       <label htmlFor="box-2">Web制作・Web開発 👨‍💻</label>
@@ -69,6 +84,7 @@ export default function Subscribing() {
         type="checkbox"
         id="box-3"
         disabled={processing}
+        checked={subscribeToAi}
         onChange={e => setSubscribeToAi(e.target.checked)}
       />
       <label htmlFor="box-3">AI・機械学習 🧠</label>

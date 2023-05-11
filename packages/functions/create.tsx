@@ -12,30 +12,20 @@ export async function handler(event: any) {
         web_subscribed: body.web_subscribed,
         ai_subscribed: body.ai_subscribed,
       })
-      .executeTakeFirst()
-
-    // if email already exists 
-      // if email is not verified, send verification email
-      // if email is verified, let them know it's already registered
+      .execute()
 
     // otherwise send verification email
 
     return {
       statusCode: 200,
-      body: { success: true },
+      body: JSON.stringify({ success: true }),
     }
+    
   } catch (e: any) {
+    console.error(e)
     return {
       statusCode: 500,
       body: JSON.stringify({ error: e.message }),
     }
   }
-
 }
-
-// {
-//   "email_address": "test3@gmail.com",
-//   "tech_subscribed": 1,
-//   "web_subscribed": 1,
-//   "ai_subscribed": 1
-// }

@@ -12,13 +12,13 @@ export async function handler(event: any) {
 
     return {
       statusCode: 200,
-      body: { success: true },
+      body: JSON.stringify({ success: true }),
     }
   } catch (e: any) {
+    console.error(e)
     return {
       statusCode: 500,
       body: JSON.stringify({ error: e.message }),
     }
   }
-
 }
