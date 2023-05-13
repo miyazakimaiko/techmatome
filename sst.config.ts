@@ -1,6 +1,8 @@
 import { SSTConfig } from "sst";
 import { SiteStack } from "./stacks/SiteStack"
-import { AuroraApiStack } from "./stacks/AuroraApiStack"
+import { ApiStack } from "./stacks/ApiStack"
+import { AuroraStack } from "./stacks/AuroraStack";
+import { SnsStack } from "./stacks/SnsStack";
 
 export default {
   config(_input) {
@@ -10,7 +12,9 @@ export default {
     };
   },
   stacks(app) {
-    app.stack(AuroraApiStack)
+    app.stack(AuroraStack)
+    app.stack(SnsStack)
+    app.stack(ApiStack)
     app.stack(SiteStack)
   },
 } satisfies SSTConfig;

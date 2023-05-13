@@ -1,13 +1,13 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { BaseSyntheticEvent, useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
-import addUpdateSubscriber from "@/functions/addUpdateSubscriber"
-import { Subscriber } from "@/interfaces/subscriber"
-import findSubscriber from "@/functions/findSubscriber"
-import { FindSubscriberPayload } from "@/interfaces/findSubscriberPayload"
 import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import { BaseSyntheticEvent, useEffect, useState } from "react"
+import { FindSubscriberPayload } from "@/interfaces/findSubscriberPayload"
+import { Subscriber } from "@/interfaces/subscriber"
+import addUpdateSubscriber from "@/functions/addUpdateSubscriber"
+import findSubscriber from "@/functions/findSubscriber"
 
 export default function Subscribing() {
   const searchParams = useSearchParams()
@@ -59,7 +59,12 @@ export default function Subscribing() {
       } as Subscriber)
 
       if (res.success) {
-        push(`/subscribed?email=${email}`)
+        if (res.type === "created") {
+          push(`/subscribed?email=${email}`)
+        } 
+        else if (res.type === "updated") {
+          push(`/updated?email=${email}`)
+        }
       }
 
     } catch (e: any) {

@@ -3,7 +3,7 @@ import { FindSubscriberPayload } from "@/interfaces/findSubscriberPayload"
 
 export default async function findSubscriber (email: string): Promise<FindSubscriberPayload> {
   try {
-    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT
+    const apiEndpoint = process.env.NEXT_PUBLIC_MAIN_API
     
     const response = await fetch(
       `${apiEndpoint}/find?email=${(email)}`, 

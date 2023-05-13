@@ -1,4 +1,17 @@
+import { SNSClient, PublishCommand } from "@aws-sdk/client-sns"
+import { Topic } from "sst/node/topic"
 import { TiroRds } from "core/rds"
+
+const sns = new SNSClient({ region: "eu-west-2" })
+
+declare module "sst/node/topic" {
+  export interface TopicResources {
+    "SubscriberCreationTopic": {
+      topicArn: string
+      topicSecretArn: string
+    }
+  }
+}
 
 export async function handler(event: any) {
   try {
@@ -14,11 +27,25 @@ export async function handler(event: any) {
       })
       .execute()
 
-    // otherwise send verification email
+    // Publish SNS to be picked up by lambda emailing verification link
+    const command = new PublishCommand({ 
+      TopicArn: Topic.SubscriberCreationTopic.topicArn,
+      Message: JSON.stringify({
+        email: body.email_address,
+        tech: body.tech_subscribed,
+        web: body.web_subscribed,
+        ai: body.ai_subscribed,
+      }),
+    })
+
+    await sns.send(command)
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true }),
+      body: JSON.stringify({ 
+        success: true,
+        type: "created" 
+      }),
     }
     
   } catch (e: any) {

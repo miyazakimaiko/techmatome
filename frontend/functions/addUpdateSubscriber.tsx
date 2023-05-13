@@ -1,10 +1,10 @@
 import { Subscriber } from "@/interfaces/subscriber"
-import Error from "next/error";
 
 export default async function addUpdateSubscriber(isSubscribed: boolean, subscriber: Subscriber): Promise<any> {
-  try {
-    const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT
-    let payload;
+  return new Promise(async (resolve, reject) => {
+    const updateEndpoint = process.env.NEXT_PUBLIC_MAIN_API
+    const createEndpoint = process.env.NEXT_PUBLIC_SUBSCRIBER_CREATION_API
+    let payload
   
     const body = {
       email_address: subscriber.email_address,
@@ -14,19 +14,20 @@ export default async function addUpdateSubscriber(isSubscribed: boolean, subscri
     }
     
     if (isSubscribed) {
-      payload = await fetch(`${apiEndpoint}/update/${subscriber.email_address}`, {
+      payload = await fetch(`${updateEndpoint}/update/${subscriber.email_address}`, {
         method: "PATCH",
         body: JSON.stringify(body),
-      });
+      })
     } else {
-      payload = await fetch(`${apiEndpoint}/create`, {
+      payload = await fetch(`${createEndpoint}/create`, {
         method: "POST",
         body: JSON.stringify(body),
-      });
+      })
     }
-    return payload.json()
-    
-  } catch (error: any) {
-    throw new Error(error)
-  }
+
+    if (payload) {
+      resolve(payload.json())
+    }
+    reject()
+  })
 }

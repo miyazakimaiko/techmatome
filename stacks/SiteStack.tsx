@@ -1,14 +1,16 @@
 import { StackContext, use } from "sst/constructs"
 import { NextjsSite } from "sst/constructs"
-import { AuroraApiStack } from "./AuroraApiStack";
+import { ApiStack } from "./ApiStack"
 
 export function SiteStack({ stack }: StackContext) {
-  const { apiEndpoint } = use(AuroraApiStack)
+  
+  const { mainApiUrl, subscriberCreationApiUrl } = use(ApiStack)
 
   const site = new NextjsSite(stack, "site", {
     path: "frontend",
     environment: {
-      NEXT_PUBLIC_API_ENDPOINT: apiEndpoint,
+      NEXT_PUBLIC_MAIN_API: mainApiUrl,
+      NEXT_PUBLIC_SUBSCRIBER_CREATION_API: subscriberCreationApiUrl,
     },
   });
 

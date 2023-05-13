@@ -18,7 +18,10 @@ export async function handler(event: any) {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true }),
+      body: JSON.stringify({ 
+        success: true,
+        type: "updated"
+      }),
     }
   } catch (e: any) {
     console.error(e)
