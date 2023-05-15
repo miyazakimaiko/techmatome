@@ -4,42 +4,52 @@ import { SnsStack } from "./SnsStack"
 
 export function ApiStack({ stack }: StackContext) {
 
-  const { cluster } = use(AuroraStack)
-  const { subscriberCreationTopic } = use(SnsStack)
+  const { 
+    cluster 
+  } = use(AuroraStack)
+  const { 
+    subscriberCreationTopic, 
+    subscriberVerifiedTopic 
+  } = use(SnsStack)
 
   const mainApi = new Api(stack, "Api", {
     defaults: {
       function: {
-        bind: [cluster],
+        bind: [
+          cluster, 
+          subscriberCreationTopic,
+          subscriberVerifiedTopic,
+        ],
       },
     },
     routes: {
-      "GET /find": "packages/functions/find.handler",
+      "GET   /find": "packages/functions/find.handler",
+      "POST  /create": "packages/functions/create.handler",
       "PATCH /update/{email}": "packages/functions/update.handler",
-      "GET /verify/{email}": "packages/functions/verify.handler",
+      "POST  /verify": "packages/functions/verify.handler",
+      "POST  /unsubscribe": "packages/functions/unsubscribe.handler",
     },
   })
-
-  const subscriberCreationApi = new Api(stack, "SubscriberCreationApi", {
-    defaults: {
-      function: {
-        bind: [cluster, subscriberCreationTopic],
-      },
-    },
-    routes: {
-      "POST /create": "packages/functions/create.handler",
-    },
-  })
+  mainApi.attachPermissionsToRoute(
+    "POST /create", 
+    ["secretsmanager:GetSecretValue"]
+  )
+  mainApi.attachPermissionsToRoute(
+    "PATCH /update/{email}", 
+    ["secretsmanager:GetSecretValue"]
+  )
+  mainApi.attachPermissionsToRoute(
+    "POST /unsubscribe", 
+    ["secretsmanager:GetSecretValue"]
+  )
 
   stack.addOutputs({
     MainApiUrl: mainApi.url,
-    SubscriberCreationApi: subscriberCreationApi.url,
     SecretArn: cluster.secretArn,
     ClusterIdentifier: cluster.clusterIdentifier,
   })
 
   return { 
     mainApiUrl: mainApi.url,
-    subscriberCreationApiUrl: subscriberCreationApi.url,
   }
 }
