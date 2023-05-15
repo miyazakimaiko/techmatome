@@ -3,7 +3,7 @@ import { Subscriber } from "@/interfaces/subscriber"
 export default async function addUpdateSubscriber(isSubscribed: boolean, subscriber: Subscriber): Promise<any> {
   return new Promise(async (resolve, reject) => {
     const updateEndpoint = process.env.NEXT_PUBLIC_MAIN_API
-    const createEndpoint = process.env.NEXT_PUBLIC_SUBSCRIBER_CREATION_API
+    const createEndpoint = process.env.NEXT_PUBLIC_MAIN_API
     let payload
   
     const body = {
