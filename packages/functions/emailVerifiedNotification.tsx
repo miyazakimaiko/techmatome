@@ -1,14 +1,14 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
 import { SNSEvent } from "aws-lambda"
-import getVerificationTemplates from "templates/verification"
+import getWelcomeTemplates from "templates/welcome"
 
-const client = new SESClient({ region: "ap-northeast-1" })
+const ses = new SESClient({ region: "ap-northeast-1" })
+
 
 export async function handler(event: SNSEvent) {
-  
-  const { email, token } = JSON.parse(event.Records[0].Sns.Message)
+  const { email } = JSON.parse(event.Records[0].Sns.Message)
 
-  const { html, text } = await getVerificationTemplates(email, token);
+  const { html, text } = await getWelcomeTemplates(email)
 
   const emailCommand = new SendEmailCommand({
     Destination: {
@@ -28,14 +28,14 @@ export async function handler(event: SNSEvent) {
       },
       Subject: {
         Charset: "UTF-8",
-        Data: "【登録を完了してください】TiROニュースまとめ"
+        Data: "【登録完了】TiROニュースまとめ"
       }
     },
     Source: "tiro.news.2023@gmail.com"
   })
 
   try {
-    await client.send(emailCommand)
+    await ses.send(emailCommand)
     return {
       statusCode: 200,
       body: JSON.stringify({ success: true }),

@@ -1,8 +1,9 @@
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns"
 import { Topic } from "sst/node/topic"
 import { TiroRds } from "core/rds"
+import { insertEmailVerificationToken } from "helpers/verificationToken"
 
-const sns = new SNSClient({ region: "eu-west-2" })
+const sns = new SNSClient({ region: "ap-northeast-1" })
 
 declare module "sst/node/topic" {
   export interface TopicResources {
@@ -19,22 +20,17 @@ export async function handler(event: any) {
 
     await TiroRds.db
       .insertInto("subscriber")
-      .values({
-        email_address: body.email_address,
-        tech_subscribed: body.tech_subscribed,
-        web_subscribed: body.web_subscribed,
-        ai_subscribed: body.ai_subscribed,
-      })
+      .values(body)
       .execute()
+
+    const token = await insertEmailVerificationToken(TiroRds.db, body.email_address)
 
     // Publish SNS to be picked up by lambda emailing verification link
     const command = new PublishCommand({ 
       TopicArn: Topic.SubscriberCreationTopic.topicArn,
       Message: JSON.stringify({
         email: body.email_address,
-        tech: body.tech_subscribed,
-        web: body.web_subscribed,
-        ai: body.ai_subscribed,
+        token
       }),
     })
 
