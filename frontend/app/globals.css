@@ -132,3 +132,19 @@ input[type="checkbox"]:checked + label:before {
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
+/* -------------------------------------------*
+  Archives page 
+ *--------------------------------------------*/
+
+.archives h2 {
+padding-bottom: 1.4rem;
+font-weight: 600;
+font-size: large;
+}
+.archives h2 a {
+  text-decoration: underline;
+}
+.archives article p {
+  padding-bottom: 1.4rem;
+}
