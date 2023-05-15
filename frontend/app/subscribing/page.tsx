@@ -16,6 +16,7 @@ export default function Subscribing() {
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [subscribeToWeb, setSubscribeToWeb] = useState(false)
   const [subscribeToAi, setSubscribeToAi] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState(false)
 
@@ -42,7 +43,10 @@ export default function Subscribing() {
           setSubscribedCategory(subscriber)
         },
         () => setError(true)
-      ).finally(() => setProcessing(false))
+      ).finally(() => {
+        setLoading(false)
+        setProcessing(false)
+      })
     }
   }, [email])
 
@@ -59,11 +63,11 @@ export default function Subscribing() {
       } as Subscriber)
 
       if (res.success) {
-        if (res.type === "created") {
+        if (res.type === "created"|| !res.verified) {
           push(`/subscribed?email=${email}`)
         } 
         else if (res.type === "updated") {
-          push(`/updated?email=${email}`)
+          push(`/updated`)
         }
       }
 
@@ -132,11 +136,27 @@ export default function Subscribing() {
   return (
     <>
       <main>
-        <h1 className="page-title">受け取るメルマガのカテゴリを追加しませんか？</h1>
-        <p>テクノロジー全般のほか、特定のジャンルに絞ったメルマガも配信しています。</p>
-        {selections}
-        {submitSection}
+        {
+          loading
+            ? <div className="mx-auto mt-8">
+                <Image
+                  src="/processing.svg"
+                  alt="processing"
+                  className="animate-spin"
+                  width={40}
+                  height={40}
+                />
+              </div>
+            : <>
+                <h1 className="page-title">受け取るメルマガのカテゴリを追加しませんか？</h1>
+                <p>テクノロジー全般のほか、特定のジャンルに絞ったメルマガも配信しています。</p>
+                {selections}
+                {submitSection}
+              </>
+        }
+
       </main>
+
     </>
   )
 }
