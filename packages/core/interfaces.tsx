@@ -7,6 +7,13 @@ export interface SubscriberTable {
   created_at?: Date
 }
 
+export interface EmailVerificationTokenTable {
+  email_address: string
+  encrypted_token: Text
+  created_at?: Date
+}
+
 export interface Database {
-  subscriber: SubscriberTable
+  subscriber: SubscriberTable,
+  email_verification_token: EmailVerificationTokenTable,
 }
