@@ -14,9 +14,11 @@
     "vitest": "^0.31.0"
   },
   "dependencies": {
-    "@aws-sdk/client-rds-data": "^3.328.0",
+    "@aws-sdk/client-rds-data": "^3.332.0",
+    "@aws-sdk/client-secrets-manager": "^3.332.0",
     "@aws-sdk/client-ses": "^3.332.0",
     "@aws-sdk/client-sns": "^3.332.0",
+    "@aws-sdk/client-ssm": "^3.332.0",
     "kysely": "^0.24.2",
     "kysely-data-api": "^0.2.0"
   }
