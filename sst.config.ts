@@ -1,18 +1,20 @@
-import { SSTConfig } from "sst";
-import { SiteStack } from "./stacks/SiteStack"
+import { SSTConfig } from "sst"
+import { AuroraStack } from "./stacks/AuroraStack"
+import { BucketStack } from "./stacks/BucketStack"
+import { SnsStack } from "./stacks/SnsStack"
 import { ApiStack } from "./stacks/ApiStack"
-import { AuroraStack } from "./stacks/AuroraStack";
-import { SnsStack } from "./stacks/SnsStack";
+import { SiteStack } from "./stacks/SiteStack"
 
 export default {
   config(_input) {
     return {
       name: "tiro-news",
-      region: "eu-west-2",
+      region: "ap-northeast-1",
     };
   },
   stacks(app) {
     app.stack(AuroraStack)
+    app.stack(BucketStack)    
     app.stack(SnsStack)
     app.stack(ApiStack)
     app.stack(SiteStack)

@@ -7,7 +7,6 @@ const client = new SESClient({ region: "ap-northeast-1" })
 export async function handler(event: SNSEvent) {
   
   const { email, token } = JSON.parse(event.Records[0].Sns.Message)
-
   const { html, text } = await getVerificationTemplates(email, token);
 
   const emailCommand = new SendEmailCommand({

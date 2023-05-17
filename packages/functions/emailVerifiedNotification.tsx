@@ -4,10 +4,9 @@ import getWelcomeTemplates from "templates/welcome"
 
 const ses = new SESClient({ region: "ap-northeast-1" })
 
-
 export async function handler(event: SNSEvent) {
+  
   const { email } = JSON.parse(event.Records[0].Sns.Message)
-
   const { html, text } = await getWelcomeTemplates(email)
 
   const emailCommand = new SendEmailCommand({

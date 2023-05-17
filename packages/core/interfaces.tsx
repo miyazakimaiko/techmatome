@@ -1,3 +1,6 @@
+/**
+ * For Kysley
+ */
 export interface SubscriberTable {
   email_address: string
   verified?: 0 | 1
@@ -17,3 +20,28 @@ export interface Database {
   subscriber: SubscriberTable,
   email_verification_token: EmailVerificationTokenTable,
 }
+
+/**
+ * For converting markdown to html email template
+ */
+export interface Metadata {
+  subject: string,
+  category: string,
+  date: string,
+}
+
+export interface Contents {
+  metadata: Metadata,
+  sections: Section[],
+}
+
+export interface Section {
+  heading: string, 
+  articles: Article[],
+}
+
+export interface Article {
+  heading: string, 
+  paragraph: string,
+}
+
