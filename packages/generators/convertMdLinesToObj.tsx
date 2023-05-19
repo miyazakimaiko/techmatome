@@ -1,7 +1,8 @@
 import { Article, Contents, Metadata, Section } from "core/interfaces"
 import * as readline from "readline"
 
-export default function convertMdLinesToObject (contentLine: readline.Interface): Promise<Contents> {
+export default function convertMdLinesToObject (contentLine: readline.Interface)
+  : Promise<Contents> {
 
   let isMetadata = false
 
@@ -36,13 +37,13 @@ export default function convertMdLinesToObject (contentLine: readline.Interface)
       else if (isMetadata) {
 
         if (line.slice(0, 8) === "subject:") {
-          contents.metadata.subject = line.slice(8)
+          contents.metadata.subject = line.slice(8).trimStart()
         }
         else if (line.slice(0, 9) === "category:") {
-          contents.metadata.category = line.slice(9)
+          contents.metadata.category = line.slice(9).trimStart()
         }
         else if (line.slice(0, 5) === "date:") {
-          contents.metadata.date = line.slice(5)
+          contents.metadata.date = line.slice(5).trimStart()
         }
       }
       else {
@@ -74,7 +75,6 @@ export default function convertMdLinesToObject (contentLine: readline.Interface)
       reject(error)
     })
     contentLine.on('close', function () {
-      console.log("close")
       section.articles.push({...article})
       contents.sections.push({...section})
       resolve(contents)

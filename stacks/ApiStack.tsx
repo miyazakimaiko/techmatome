@@ -35,6 +35,10 @@ export function ApiStack({ stack }: StackContext) {
     ["secretsmanager:GetSecretValue"]
   )
   mainApi.attachPermissionsToRoute(
+    "POST /verify", 
+    ["secretsmanager:GetSecretValue"]
+  )
+  mainApi.attachPermissionsToRoute(
     "PATCH /update/{email}", 
     ["secretsmanager:GetSecretValue"]
   )

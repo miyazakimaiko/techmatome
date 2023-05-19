@@ -36,26 +36,21 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
           * {
             box-sizing: border-box;
           }
-
           body {
             margin: 0;
             padding: 0;
           }
-
           a[x-apple-data-detectors] {
             color: inherit !important;
             text-decoration: inherit !important;
           }
-
           #MessageViewBody a {
             color: inherit;
             text-decoration: none;
           }
-
           p {
             line-height: inherit
           }
-
           .desktop_hide,
           .desktop_hide table {
             mso-hide: all;
@@ -63,41 +58,32 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
             max-height: 0px;
             overflow: hidden;
           }
-
           .image_block img+div {
             display: none;
           }
-
           .menu_block.desktop_hide .menu-links span {
             mso-hide: all;
           }
-
           @media (max-width:620px) {
             .desktop_hide table.icons-inner {
               display: inline-block !important;
             }
-
             .icons-inner {
               text-align: center;
             }
-
             .icons-inner td {
               margin: 0 auto;
             }
-
             .row-content {
               width: 100% !important;
             }
-
             .mobile_hide {
               display: none;
             }
-
             .stack .column {
               width: 100%;
               display: block;
             }
-
             .mobile_hide {
               min-height: 0;
               max-height: 0;
@@ -105,7 +91,6 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
               overflow: hidden;
               font-size: 0px;
             }
-
             .desktop_hide,
             .desktop_hide table {
               display: table !important;

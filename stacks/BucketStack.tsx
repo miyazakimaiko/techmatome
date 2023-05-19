@@ -3,19 +3,28 @@ import { Bucket, StackContext } from "sst/constructs"
 export function BucketStack({ stack }: StackContext) {
 
   /**
-   * When I upload markdown file, those notification fires and they creates Html file from md file uploaded.
-   * At 21:00 UTC, Cron job checks if there's a html file with a target date.
-   * If so, send them to subscribers.
+   * When I upload markdown file, those notification fires 
+   * and they creates Html file from md file uploaded.
+   * At 21:00 UTC, Cron job checks if there's a html file 
+   * with a target date. If so, send them to subscribers.
    * After sending, it deletes the html file created.
    */
   
-  const techNewsMarkdownBucket = new Bucket(stack, "TechNewsMarkdownBucket")
+  const techNewsMarkdownBucket 
+    = new Bucket(stack, "TechNewsMarkdownBucket")
+
+    const techNewsEmailTemplateBucket 
+    = new Bucket(stack, "TechNewsEmailTemplateBucket")
 
   techNewsMarkdownBucket.addNotifications(stack, {
     dailyTechMarkdownUploadedNotification: {
       function: {
-        handler: "packages/functions/daily/generateDailyTechNewsHtml.handler",
-        environment: { techNewsMarkdownBucketName: techNewsMarkdownBucket.bucketName },
+        handler: 
+          "packages/functions/daily/generateDailyTechTemplate.handler",
+        environment: { 
+          techNewsMdBucketName: techNewsMarkdownBucket.bucketName,
+          techNewsEmailTpBucketName: techNewsEmailTemplateBucket.bucketName,
+        },
       },
       events: ["object_created"],
     },
@@ -26,8 +35,9 @@ export function BucketStack({ stack }: StackContext) {
       "s3",
       "ssm:GetParameter",
       "secretsmanager:GetSecretValue",
-      "ses:SendEmail", 
-      "ses:SendRawEmail",
+      "ses:DeleteTemplate",
+      "ses:CreateTemplate",
+      "ses:SendTemplatedEmail",
     ]
   )
 
@@ -49,14 +59,15 @@ export function BucketStack({ stack }: StackContext) {
     },
   })
 
-  stack.addOutputs({
-    TechNewsMarkdownBucketName: techNewsMarkdownBucket.bucketName,
-    WebNewsBucketName: webNewsBucket.bucketName,
-    AiNewsBucketName: aiNewsBucket.bucketName,
-  })
+  // stack.addOutputs({
+  //   TechNewsMarkdownBucketName: techNewsMarkdownBucket.bucketName,
+  //   WebNewsBucketName: webNewsBucket.bucketName,
+  //   AiNewsBucketName: aiNewsBucket.bucketName,
+  // })
 
   return {
     techNewsMarkdownBucket,
+    techNewsEmailTemplateBucket,
     webNewsBucket,
     aiNewsBucket,
   }
