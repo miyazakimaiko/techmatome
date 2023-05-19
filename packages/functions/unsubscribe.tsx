@@ -3,14 +3,13 @@ import { decrypt } from "helpers/crypto"
 import { UpdateObject } from "kysely"
 import { Database } from "core/interfaces"
 
-
 /**
- * 
- * @description Update the category subscribed to 0.
- * After update, check if all of subscriptions are 0.
+ * This unsubscribe function updates the subscribed category of 
+ * the user to 0. After update, check if all of their subscriptions are 0.
  * If that's the case, delete the subscriber from DB.
  */
 export async function handler(event: any) {
+
   try {
     const { e, c } = event.queryStringParameters
 
@@ -96,8 +95,6 @@ export async function handler(event: any) {
       .where("email_address", "=", email)
       .returningAll()
       .execute()
-
-    console.log(res)
 
     if ((res.tech_subscribed
         + res.web_subscribed
