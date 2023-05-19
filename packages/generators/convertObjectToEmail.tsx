@@ -166,7 +166,7 @@ async function generateEndingBlock() {
       <tr>
         <td class="pad">
           <div style="color:#9a9a9a;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;">
-            <p style="margin: 0;">配信停止をご希望の場合は、<a href="${siteUrl}[customUnsubscribeEndpoint]">こちら</a>からお願いいたします。</p>
+            <p style="margin: 0;">配信停止をご希望の場合は、<a href="${siteUrl}/{{dynamicUnsubscribeEndpoint}}">こちら</a>からお願いいたします。</p>
           </div>
         </td>
       </tr>
@@ -174,28 +174,39 @@ async function generateEndingBlock() {
   `
 }
 
-export default async function convertObjectToEmailHtml(contents: Contents): Promise<{subject: string, html: string}> {
+export default async function convertObjectToEmailHtml(contents: Contents)
+  : Promise<{date: string, subject: string, html: string}> {
+
   const { metadata, sections } = contents
+  let html = ""
 
-  const menuBlock = generateMenuBlock()
-  const mainHeadingBlock = generateMainHeadingBlock(metadata)
-  let sectionsBlock = ""
-  const endingBlock = await generateEndingBlock()
-
-  for(const section of sections) {
-    sectionsBlock += generateSectionHeadingBlock(section.heading)
-
-    for(const article of section.articles) {
-      sectionsBlock += generateArticleBlock(article)
+  try {
+    const menuBlock = generateMenuBlock()
+    const mainHeadingBlock = generateMainHeadingBlock(metadata)
+    let sectionsBlock = ""
+    const endingBlock = await generateEndingBlock()
+  
+    for(const section of sections) {
+      sectionsBlock += generateSectionHeadingBlock(section.heading)
+  
+      for(const article of section.articles) {
+        sectionsBlock += generateArticleBlock(article)
+      }
     }
+  
+    html = combineBlocksIntoDailyNewsHtml(
+      menuBlock, 
+      mainHeadingBlock, 
+      sectionsBlock, 
+      endingBlock
+    )
+
+  } catch (error: any) {
+    throw new Error(error)
   }
-
-  const html = combineBlocksIntoDailyNewsHtml(
-    menuBlock, 
-    mainHeadingBlock, 
-    sectionsBlock, 
-    endingBlock
-  )
-
-  return { subject: metadata.subject, html }
+  return { 
+    date: metadata.date,
+    subject: metadata.subject, 
+    html
+  }
 }
