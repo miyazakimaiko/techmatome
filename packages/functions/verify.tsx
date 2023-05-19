@@ -28,10 +28,10 @@ export async function handler(event: any) {
 
     const created_at_str = tokenData!.created_at!.toString() + "+00:00"
     const created_at_epoch = Date.parse(created_at_str)
-    const expired_at_epoch = created_at_epoch + 60000 // 1 min for development; 10 mins for prod
+    const expired_at_epoch = created_at_epoch + 60000 // 60000/1 min for development; 600000/10 mins for prod
     const current_epoch = new Date().getTime()
 
-    if (!tokenData || expired_at_epoch < current_epoch) {
+    if (!tokenData || (expired_at_epoch < current_epoch)) {
       return {
         statusCode: 400,
         body: JSON.stringify({ success: false }),
