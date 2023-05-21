@@ -1,5 +1,4 @@
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm"
-import { techSectionHeadingIcons } from "core/constants"
 import { Article, Contents, Metadata } from "core/interfaces"
 import combineBlocksIntoDailyNewsHtml from "generators/combineBlocksIntoDailyNewsHtml"
 
@@ -9,23 +8,33 @@ const getParamCommand = new GetParameterCommand({
   Name: "/sst/tiro-news/site-url"
 })
 
+function generatePreheaderBlock(text: string) {
+  return `
+    <table width="100%">
+      <tr>
+        <td class="preheader" style="display:none !important; visibility:hidden; height:0; width:0; font-size:0; color:transparent; color:rgba(0,0,0,0); opacity:0; mso-hide:all;"><font size="1" color="#666666">${text}</font></td>
+      </tr>
+    </table>
+  `
+}
+
 function generateMenuBlock() {
   return `
-    <div class="spacer_block block-1" style="height:20px;line-height:20px;font-size:1px;">&#8202;</div>
+    <div class="spacer_block block-1" style="height:15px;line-height:15px;font-size:1px;">&#8202;</div>
     <table class="menu_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
       <tr>
         <td class="pad">
           <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
             <tr>
               <td class="alignment" style="text-align:center;font-size:0px;">
-                <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">登録</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">過去のメルマガ</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">求人情報</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
+                <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">ブラウザで読む</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">メルマガ一覧</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://docs.google.com/forms/d/e/1FAIpQLSe1elz3gKzyLDOTTAULu1qONCP3K0BzZiUbm-TzRQ4kh1bp-Q/viewform?usp=sf_link" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
               </td>
             </tr>
           </table>
         </td>
       </tr>
     </table>
-    <div class="spacer_block block-3" style="height:20px;line-height:20px;font-size:1px;">&#8202;</div>
+    <div class="spacer_block block-3" style="height:15px;line-height:15px;font-size:1px;">&#8202;</div>
   `
 }
 
@@ -68,15 +77,9 @@ function generateMainHeadingBlock(metadata: Metadata) {
   `
 }
 
-function generateSectionHeadingBlock(heading: string) {
-  if (!Object.keys(techSectionHeadingIcons).includes(heading)) {
-    throw new Error(
-      `Not allowed section heading found: "${heading}". 
-      | It must be one of the following: ${Object.keys(techSectionHeadingIcons)}`
-    )
-  }
-  const headingIcon = 
-    techSectionHeadingIcons[heading as keyof typeof techSectionHeadingIcons]
+function generateSectionHeadingBlock(icon: string, heading: string) {
+
+  icon = icon.replace("<icon>", "").replace("</icon>", "")
 
   return `
     <div class="spacer_block block-7" style="height:30px;line-height:30px;font-size:1px;">&#8202;</div>
@@ -84,7 +87,7 @@ function generateSectionHeadingBlock(heading: string) {
       <tr>
         <td class="pad">
           <h1 style="margin: 0; color: #8a3c90; direction: ltr; font-family: Arial, Helvetica, sans-serif; font-size: 38px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
-            <span class="tinyMce-placeholder">${headingIcon}</span>
+            <span class="tinyMce-placeholder">${icon}</span>
           </h1>
         </td>
       </tr>
@@ -122,7 +125,7 @@ function generateArticleBlock(article: Article) {
       <tr>
         <td class="pad">
           <h2 style="margin: 0; color: #060606; direction: ltr; font-family: メイリオ, Meiryo, ＭＳ Ｐゴシック, MS PGothic, ヒラギノ角ゴ Pro W3, Hiragino Kaku Gothic Pro,Osaka, sans-serif; font-size: 17px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
-            <a href="${headingLink[1]}" target="_blank" style="text-decoration: underline; color: #060606;" rel="noopener">
+            <a href="${headingLink[1]}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: #060606;">
               ${headingText[1]}&nbsp;
             </a>
           </h2>
@@ -181,13 +184,14 @@ export default async function convertObjectToEmailHtml(contents: Contents)
   let html = ""
 
   try {
+    const preheaderBlock = generatePreheaderBlock(sections[0].articles[0].paragraph.slice(0, 180))
     const menuBlock = generateMenuBlock()
     const mainHeadingBlock = generateMainHeadingBlock(metadata)
     let sectionsBlock = ""
     const endingBlock = await generateEndingBlock()
   
     for(const section of sections) {
-      sectionsBlock += generateSectionHeadingBlock(section.heading)
+      sectionsBlock += generateSectionHeadingBlock(section.icon, section.heading)
   
       for(const article of section.articles) {
         sectionsBlock += generateArticleBlock(article)
@@ -195,6 +199,7 @@ export default async function convertObjectToEmailHtml(contents: Contents)
     }
   
     html = combineBlocksIntoDailyNewsHtml(
+      preheaderBlock,
       menuBlock, 
       mainHeadingBlock, 
       sectionsBlock, 

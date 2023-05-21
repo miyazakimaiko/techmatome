@@ -1,4 +1,5 @@
 export default function combineBlocksIntoDailyNewsHtml(
+  preheaderBlock: string,
   menuBlock: string, 
   mainHeadingBlock: string,
   sectionsBlock: string,
@@ -80,6 +81,7 @@ export default function combineBlocksIntoDailyNewsHtml(
     </head>
 
     <body style="background-color: #ffffff; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+      ${preheaderBlock}
       <table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff;">
         <tbody>
           <tr>
