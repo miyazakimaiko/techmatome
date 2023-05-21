@@ -36,6 +36,7 @@ export interface Contents {
 }
 
 export interface Section {
+  icon: string,
   heading: string, 
   articles: Article[],
 }

@@ -1,9 +1,9 @@
 import fs from "fs"
 
-export default function getLatestArticleSlug (): String {
-  const folder = "articles/"
-  const files = fs.readdirSync(folder)
+export default function getLatestArticleSlug (category: string): String {
+  const files = fs.readdirSync(`articles/${category}/`)
   const latestArticleFile = files.reverse().find((file) => file.endsWith(".md"))
+  const slug = latestArticleFile?.replace(".md", "") ?? "#"
 
-  return latestArticleFile?.replace(".md", "") ?? "#"
+  return `${category}/${slug}`
 }

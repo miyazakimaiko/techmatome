@@ -1,5 +1,4 @@
 import { StackContext, Cron, use } from "sst/constructs"
-import { BucketStack } from "./BucketStack"
 import { AuroraStack } from "./AuroraStack"
 
 export function CronStack({ stack }: StackContext) {
@@ -8,31 +7,58 @@ export function CronStack({ stack }: StackContext) {
     cluster 
   } = use(AuroraStack)
 
-  const { 
-    techNewsEmailTemplateBucket 
-  } = use(BucketStack)
-  
-  const cron = new Cron(stack, "Cron", {
-    schedule: "cron(5 23 * * ? *)", // UTC time
+  const cronScheculeString = "cron(59 10 * * ? *)"
+
+  const commonPermissions = [
+    "rds-data",
+    "ses:CreateTemplate",
+    "ses:DeleteTemplate",
+    "secretsmanager:GetSecretValue",
+    "ses:SendTemplatedEmail",
+  ]
+
+  const techCron = new Cron(stack, "TechCron", {
+    schedule: cronScheculeString,
     job: {
       function: {
         bind: [ cluster ],
-        handler: "packages/functions/daily/bulkSendDailyTech.handler",
+        handler: "packages/functions/daily/bulkSendDailyEmail.handler",
         environment: {
-          techNewsEmailTpBucketName: techNewsEmailTemplateBucket.bucketName
+          CATEGORY: "tech"
         },
         
       },
     },
   })
-  cron.attachPermissions([
-    "rds-data",
-    "s3",
-    "secretsmanager:GetSecretValue",
-    "ses:SendTemplatedEmail",
-  ])
+  techCron.attachPermissions(commonPermissions)
 
-  stack.addOutputs({
-    CronId: cron.id,
-  });
+  const webCron = new Cron(stack, "WebCron", {
+    schedule: cronScheculeString,
+    job: {
+      function: {
+        bind: [ cluster ],
+        handler: "packages/functions/daily/bulkSendDailyEmail.handler",
+        environment: {
+          CATEGORY: "web"
+        },
+        
+      },
+    },
+  })
+  webCron.attachPermissions(commonPermissions)
+
+  const aiCron = new Cron(stack, "aiCron", {
+    schedule: cronScheculeString,
+    job: {
+      function: {
+        bind: [ cluster ],
+        handler: "packages/functions/daily/bulkSendDailyEmail.handler",
+        environment: {
+          CATEGORY: "ai"
+        },
+        
+      },
+    },
+  })
+  aiCron.attachPermissions(commonPermissions)
 }

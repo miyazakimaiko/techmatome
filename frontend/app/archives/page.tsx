@@ -1,9 +1,8 @@
-import ArticleLink from '@/components/articleLink'
+import Link from 'next/link'
 import Header from '@/components/header'
 import SubscribeSection from '@/components/subscribeSection'
-import getArticlesMetadata from '@/functions/getArticlesMetadata'
 
-export default function Archives() {
+export default function ArchivesTech() {
 
   const emojis = (
     <div className="text-5xl pt-2 pb-6">
@@ -24,20 +23,29 @@ export default function Archives() {
     </div>
   )
 
-  const articlesMetadata = getArticlesMetadata();
-  const articleLinks = articlesMetadata.map((metadata) => (
-    <ArticleLink key={metadata.slug} {...metadata} />
-  )).reverse();
+  const cagegoryLinks = (
+    <div className="py-16">
+      <article className="pb-4">
+        <Link href={`archives/tech`} className="underline">テックまとめ</Link>
+      </article>
+      <article className="pb-4">
+        <Link href={`archives/web`} className="underline">Web制作・Web開発まとめ</Link>
+      </article>
+      <article className="pb-4">
+        <Link href={`archives/ai`} className="underline">AIまとめ</Link>
+      </article>
+    </div>
+  )
 
   return (
     <>
       <Header/>
       <main className="grow">
-        <h1 className="page-title">過去のメルマガ 一覧</h1>
+        <h1 className="page-title">過去のまとめ カテゴリ一覧</h1>
         {emojis}
         {introText}
-        <SubscribeSection />
-        <div className="py-16">{articleLinks}</div>
+        <SubscribeSection category={"tech"} />
+        {cagegoryLinks}
       </main>
     </>
   )

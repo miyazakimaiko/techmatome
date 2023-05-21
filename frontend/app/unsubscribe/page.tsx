@@ -2,6 +2,7 @@
 import { BaseSyntheticEvent, useEffect, useRef, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import unsubscribe from "@/functions/unsubscribe"
+import Header from "@/components/header"
 
 const CATEGORY = Object.freeze({
   ALL: "all",
@@ -32,7 +33,7 @@ export default function Unsbscribe() {
     else if (category === CATEGORY.WEB) {
       setCategoryName("WEB制作・開発まとめ")
     }
-    else if (category === CATEGORY.TECH) {
+    else if (category === CATEGORY.AI) {
       setCategoryName("AIまとめ")
     }
   }, [category])
@@ -62,26 +63,29 @@ export default function Unsbscribe() {
   }
   
   return (
-    <main>
-    { processing 
-      ? <p>登録を解除しています…</p>
-      : completed
-        ? <p>登録を解除しました。</p>
-        : error 
-          ? <p>エラーが発生しました。お手数をおかけしますが、再度後ほど解除していただくか、support@tiro.newsにご連絡ください。</p>
-          : <form 
-              ref={form} 
-              action="/subscribing" 
-              method="get" 
-              className="flex justify-center"
-            >
-              <div>
-                <button type="submit" onClick={submit} className="subscribe-button">
-                  {categoryName}の登録を解除する
-                </button>
-              </div>
-            </form>
-    }
-    </main>
+    <>
+      <Header />
+      <main className="grow">
+      { processing 
+        ? <p>登録を解除しています…</p>
+        : completed
+          ? <p>登録を解除しました。</p>
+          : error 
+            ? <p>エラーが発生しました。お手数をおかけしますが、再度後ほど解除していただくか、support@tiro.newsにご連絡ください。</p>
+            : <form 
+                ref={form} 
+                action="/subscribing" 
+                method="get" 
+                className="flex justify-center"
+              >
+                <div>
+                  <button type="submit" onClick={submit} className="subscribe-button">
+                    {categoryName}の登録を解除する
+                  </button>
+                </div>
+              </form>
+      }
+      </main>
+    </>
   )
 }

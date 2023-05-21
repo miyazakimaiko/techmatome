@@ -8,6 +8,7 @@ import convertMdLinesToObject from "generators/convertMdLinesToObj"
 import convertObjectToEmail from "generators/convertObjectToEmail"
 import generateCustomUnsubscribeEndpoint 
   from "generators/generateCustomUnsubscribeEndpoint"
+import { generateEmailSenderFromCategory } from "helpers/email"
 
 const s3 = new S3Client({ region: "ap-northeast-1" })
 const ses = new SESClient({ region: "ap-northeast-1" })
@@ -20,20 +21,21 @@ const ses = new SESClient({ region: "ap-northeast-1" })
 export async function handler(objectCreatedEvent: any) {
 
   const testEmailReceiver = "myzkmik19922@gmail.com"
+  const category = process.env.BUCKET_CATEGORY
 
-  console.log("INFO: Object is uploaded to Markdown S3 bucket.")
+  console.log(`INFO(${category}): Object is uploaded to Markdown S3 bucket.`)
+
+  if (!category) {
+    const message = "process.env.BUCKET_CATEGORY is undefined."
+    console.error(message)
+    throw new Error(message)
+  }
 
   try {
-    
-    if (objectCreatedEvent.Records.length > 1) {
-      throw new Error(
-        "Multiple object uploaded. Please upload one per day.")
-    }
-
     const targetKey = objectCreatedEvent.Records[0].s3.object.key
   
     const getInput = {
-      Bucket: process.env.techNewsMdBucketName,
+      Bucket: process.env.MD_BUCKET_NAME,
       Key: targetKey,
     }
 
@@ -46,22 +48,23 @@ export async function handler(objectCreatedEvent: any) {
       terminal: false
     })
 
-    const contentsObj = await convertMdLinesToObject(contentLine)
-    console.log("INFO: Uploaded Markdown file has been converted to js object.")
+    const date = targetKey.replace(".md", "")
+    const contentsObj = await convertMdLinesToObject(date, category, contentLine)
+    console.log(`INFO(${category}): Uploaded Markdown file has been converted to js object.`)
 
     const emailData = await convertObjectToEmail(contentsObj)
-    console.log("INFO: JS object has been converted to emailData.")
+    console.log(`INFO(${category}): JS object has been converted to emailData.`)
 
     // template cannot override, so delete it first if
     // there's one with the same name
     const deleteCommand = new DeleteTemplateCommand({
-      "TemplateName": `daily-news-template-${emailData.date}`
+      "TemplateName": `daily-${category}-template-${emailData.date}`
     })
     await ses.send(deleteCommand)
 
     const templateCommand = new CreateTemplateCommand({
       "Template": {
-        "TemplateName": `daily-news-template-${emailData.date}`,
+        "TemplateName": `daily-${category}-template-${emailData.date}`,
         "SubjectPart": emailData.subject,
         "TextPart": "Dear ,\r\nYour favorite animal is .",
         "HtmlPart": emailData.html
@@ -69,14 +72,16 @@ export async function handler(objectCreatedEvent: any) {
     })
 
     await ses.send(templateCommand)
-    console.log("INFO: emailData have been converted to SES email template.")
+    console.log(`INFO(${category}): emailData have been converted to SES email template.`)
 
     const unsubscribeEndpoint 
-      = await generateCustomUnsubscribeEndpoint(testEmailReceiver, "tech")
+      = await generateCustomUnsubscribeEndpoint(testEmailReceiver, category)
+
+    const sender = generateEmailSenderFromCategory(category)
 
     const emailCommand = new SendTemplatedEmailCommand({
-      "Source": "tiro.news.2023@gmail.com",
-      "Template": `daily-news-template-${emailData.date}`,
+      "Source": sender,
+      "Template": `daily-${category}-template-${emailData.date}`,
       "Destination": {
         "ToAddresses": [testEmailReceiver]
       },
@@ -85,7 +90,7 @@ export async function handler(objectCreatedEvent: any) {
     })
   
     await ses.send(emailCommand)
-    console.log(`INFO: test email has been sent to ${testEmailReceiver}.`)
+    console.log(`INFO(${category}): test email has been sent to ${testEmailReceiver}. `)
     
   } catch (error) {
     console.error(error)

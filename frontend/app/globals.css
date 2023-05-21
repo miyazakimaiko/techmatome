@@ -137,10 +137,23 @@ input[type="checkbox"]:checked + label:before {
   Archives page 
  *--------------------------------------------*/
 
+.archives icon {
+  margin-top: 1.6rem;
+  padding-bottom: 1.4rem;
+  font-size: xx-large;
+  display: flex;
+  justify-content: center;
+}
+.archives h1 {
+  padding-bottom: 1.4rem;
+  font-weight: 600;
+  font-size: medium;
+  text-align: center;
+}
 .archives h2 {
-padding-bottom: 1.4rem;
-font-weight: 600;
-font-size: large;
+  padding-bottom: 1.4rem;
+  font-weight: 600;
+  font-size: large;
 }
 .archives h2 a {
   text-decoration: underline;

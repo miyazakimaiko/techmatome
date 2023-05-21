@@ -1,74 +1,103 @@
 import { Bucket, StackContext } from "sst/constructs"
 
+const commonPermissions = [
+  "s3:GetObject",
+  "ssm:GetParameter",
+  "secretsmanager:GetSecretValue",
+  "ses:DeleteTemplate",
+  "ses:CreateTemplate",
+  "ses:SendTemplatedEmail",
+]
+
 export function BucketStack({ stack }: StackContext) {
 
   /**
-   * When I upload markdown file, those notification fires 
-   * and they creates Html file from md file uploaded.
-   * At 21:00 UTC, Cron job checks if there's a html file 
-   * with a target date. If so, send them to subscribers.
-   * After sending, it deletes the html file created.
+   * When markdown file is uploaded, those notifications run and 
+   * create & upload SES email template from the md file uploaded.
+   * At 21:00 UTC, Cron job checks if there's SES email template 
+   * with a target date suffix. If so, send it to subscribers.
    */
   
-  const techNewsMarkdownBucket 
-    = new Bucket(stack, "TechNewsMarkdownBucket")
 
-    const techNewsEmailTemplateBucket 
-    = new Bucket(stack, "TechNewsEmailTemplateBucket")
+  /** 
+   * Category: Tech
+  */
+  const techMdBucket 
+    = new Bucket(stack, "TechMdBucket")
 
-  techNewsMarkdownBucket.addNotifications(stack, {
+  techMdBucket.addNotifications(stack, {
     dailyTechMarkdownUploadedNotification: {
       function: {
         handler: 
-          "packages/functions/daily/generateDailyTechTemplate.handler",
+          "packages/functions/daily/generateDailyEmailTemplate.handler",
         environment: { 
-          techNewsMdBucketName: techNewsMarkdownBucket.bucketName,
-          techNewsEmailTpBucketName: techNewsEmailTemplateBucket.bucketName,
+          MD_BUCKET_NAME: techMdBucket.bucketName,
+          BUCKET_CATEGORY: "tech",
         },
       },
       events: ["object_created"],
     },
   })
-  techNewsMarkdownBucket.attachPermissionsToNotification(
+  techMdBucket.attachPermissionsToNotification(
     "dailyTechMarkdownUploadedNotification", 
-    [
-      "s3",
-      "ssm:GetParameter",
-      "secretsmanager:GetSecretValue",
-      "ses:DeleteTemplate",
-      "ses:CreateTemplate",
-      "ses:SendTemplatedEmail",
-    ]
+    commonPermissions
   )
 
-  const webNewsBucket = new Bucket(stack, "WebNewsBucket", {
-    notifications: {
-      dailyWebUploadedNotification: {
-        function: "packages/functions/generateDailyWebNews.handler",
-        events: ["object_created"],
+  /** 
+   * Category: Web
+  */
+  const webMdBucket = new Bucket(stack, "WebMdBucket")
+
+  webMdBucket.addNotifications(stack, {
+    dailyWebMarkdownUploadedNotification: {
+      function: {
+        handler: 
+          "packages/functions/daily/generateDailyEmailTemplate.handler",
+        environment: { 
+          MD_BUCKET_NAME: webMdBucket.bucketName,
+          BUCKET_CATEGORY: "web",
+        },
       },
+      events: ["object_created"],
     },
   })
+  webMdBucket.attachPermissionsToNotification(
+    "dailyWebMarkdownUploadedNotification", 
+    commonPermissions
+  )
 
-  const aiNewsBucket = new Bucket(stack, "AiNewsBucket", {
-    notifications: {
-      dailyAiUploadedNotification: {
-        function: "packages/functions/generateDailyAiNews.handler",
-        events: ["object_created"],
+  /** 
+   * Category: AI
+  */
+  const aiMdBucket = new Bucket(stack, "AiMdBucket")
+
+  aiMdBucket.addNotifications(stack, {
+    dailyAiMarkdownUploadedNotification: {
+      function: {
+        handler: 
+          "packages/functions/daily/generateDailyEmailTemplate.handler",
+        environment: { 
+          MD_BUCKET_NAME: aiMdBucket.bucketName,
+          BUCKET_CATEGORY: "ai",
+        },
       },
+      events: ["object_created"],
     },
   })
+  aiMdBucket.attachPermissionsToNotification(
+    "dailyAiMarkdownUploadedNotification", 
+    commonPermissions
+  )
 
-  // stack.addOutputs({
-  //   TechNewsMarkdownBucketName: techNewsMarkdownBucket.bucketName,
-  //   WebNewsBucketName: webNewsBucket.bucketName,
-  //   AiNewsBucketName: aiNewsBucket.bucketName,
-  // })
+  stack.addOutputs({
+    techMdBucketName: techMdBucket.bucketName,
+    WebNewsBucketName: webMdBucket.bucketName,
+    AiNewsBucketName: aiMdBucket.bucketName,
+  })
 
   return {
-    techNewsMarkdownBucket,
-    techNewsEmailTemplateBucket,
-    webNewsBucket,
-    aiNewsBucket,
+    techMdBucket,
+    webMdBucket,
+    aiMdBucket,
   }
 }
