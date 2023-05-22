@@ -63,16 +63,16 @@ export default function Header() {
               <Link href={"/archives"} className="underline p-1">過去のメルマガをみる</Link>
             </li>
             <li className="my-1">
-              <Link href={advertiseFormLink} target="_blank" rel="noopener noreferrer" className="underline p-1">
+              <Link href={advertiseFormLink} className="underline p-1">
                 広告を出す
               </Link>
             </li>
-            <li className="my-1">
+            {/* <li className="my-1">
               <Link href={"/"} className="underline p-1">仕事をさがす</Link>
             </li>
             <li className="my-1">
               <Link href={"/"} className="underline p-1">仕事を載せる</Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>

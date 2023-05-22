@@ -233,7 +233,7 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
                                             <table class="icons-inner" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block; margin-right: -4px; padding-left: 0px; padding-right: 0px;" cellpadding="0" cellspacing="0" role="presentation"><!--<![endif]-->
                                               <tr>
                                                 <td style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #9d9d9d; vertical-align: middle; letter-spacing: undefined; text-align: center;">
-                                                  配信停止をご希望の場合は<a href=${unsubscribeUrl} target="_blank" style="color: #9d9d9d;">こちら</a>
+                                                  配信停止をご希望の場合は<a href=${unsubscribeUrl} style="color: #9d9d9d;">こちら</a>
                                                 </td>
                                               </tr>
                                             </table>

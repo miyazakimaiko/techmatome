@@ -125,7 +125,7 @@ function generateArticleBlock(article: Article) {
       <tr>
         <td class="pad">
           <h2 style="margin: 0; color: #060606; direction: ltr; font-family: メイリオ, Meiryo, ＭＳ Ｐゴシック, MS PGothic, ヒラギノ角ゴ Pro W3, Hiragino Kaku Gothic Pro,Osaka, sans-serif; font-size: 17px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
-            <a href="${headingLink[1]}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; color: #060606;">
+            <a href="${headingLink[1]}" style="text-decoration: underline; color: #060606;">
               ${headingText[1]}&nbsp;
             </a>
           </h2>
