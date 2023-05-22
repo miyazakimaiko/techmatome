@@ -29,7 +29,7 @@ export function BucketStack({ stack }: StackContext) {
     dailyTechMarkdownUploadedNotification: {
       function: {
         handler: 
-          "packages/functions/daily/generateDailyEmailTemplate.handler",
+          "packages/functions/bucket/generateDailyEmailTemplate.handler",
         environment: { 
           MD_BUCKET_NAME: techMdBucket.bucketName,
           BUCKET_CATEGORY: "tech",
@@ -52,7 +52,7 @@ export function BucketStack({ stack }: StackContext) {
     dailyWebMarkdownUploadedNotification: {
       function: {
         handler: 
-          "packages/functions/daily/generateDailyEmailTemplate.handler",
+        "packages/functions/bucket/generateDailyEmailTemplate.handler",
         environment: { 
           MD_BUCKET_NAME: webMdBucket.bucketName,
           BUCKET_CATEGORY: "web",
@@ -75,7 +75,7 @@ export function BucketStack({ stack }: StackContext) {
     dailyAiMarkdownUploadedNotification: {
       function: {
         handler: 
-          "packages/functions/daily/generateDailyEmailTemplate.handler",
+        "packages/functions/bucket/generateDailyEmailTemplate.handler",
         environment: { 
           MD_BUCKET_NAME: aiMdBucket.bucketName,
           BUCKET_CATEGORY: "ai",

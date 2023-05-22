@@ -23,11 +23,11 @@ export function ApiStack({ stack }: StackContext) {
       },
     },
     routes: {
-      "GET   /find": "packages/functions/find.handler",
-      "POST  /create": "packages/functions/create.handler",
-      "PATCH /update/{email}": "packages/functions/update.handler",
-      "POST  /verify": "packages/functions/verify.handler",
-      "POST  /unsubscribe": "packages/functions/unsubscribe.handler",
+      "GET   /find": "packages/functions/api/find.handler",
+      "POST  /create": "packages/functions/api/create.handler",
+      "PATCH /update/{email}": "packages/functions/api/update.handler",
+      "POST  /verify": "packages/functions/api/verify.handler",
+      "POST  /unsubscribe": "packages/functions/api/unsubscribe.handler",
     },
   })
   mainApi.attachPermissionsToRoute(

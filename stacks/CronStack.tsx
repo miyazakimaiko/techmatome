@@ -22,7 +22,7 @@ export function CronStack({ stack }: StackContext) {
     job: {
       function: {
         bind: [ cluster ],
-        handler: "packages/functions/daily/bulkSendDailyEmail.handler",
+        handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {
           CATEGORY: "tech"
         },
@@ -37,7 +37,7 @@ export function CronStack({ stack }: StackContext) {
     job: {
       function: {
         bind: [ cluster ],
-        handler: "packages/functions/daily/bulkSendDailyEmail.handler",
+        handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {
           CATEGORY: "web"
         },
@@ -52,7 +52,7 @@ export function CronStack({ stack }: StackContext) {
     job: {
       function: {
         bind: [ cluster ],
-        handler: "packages/functions/daily/bulkSendDailyEmail.handler",
+        handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {
           CATEGORY: "ai"
         },

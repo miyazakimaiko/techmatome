@@ -5,7 +5,7 @@ export function SnsStack({ stack }: StackContext) {
   // send on creation
   const subscriberCreationTopic = new Topic(stack, "SubscriberCreationTopic", {
     subscribers: {
-      emailVerificationLink: "packages/functions/emailVerificationLink.handler",
+      emailVerificationLink: "packages/functions/sns/emailVerificationLink.handler",
     },
   })
   subscriberCreationTopic.attachPermissionsToSubscriber(
@@ -20,7 +20,7 @@ export function SnsStack({ stack }: StackContext) {
   // send when verified
   const subscriberVerifiedTopic = new Topic(stack, "SubscriberVerifiedTopic", {
     subscribers: {
-      emailVerifiedNotification: "packages/functions/emailVerifiedNotification.handler",
+      emailVerifiedNotification: "packages/functions/sns/emailVerifiedNotification.handler",
     },
   })
   subscriberVerifiedTopic.attachPermissionsToSubscriber(
