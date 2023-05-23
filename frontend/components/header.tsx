@@ -32,9 +32,9 @@ export default function Header() {
         {/* nav for tablet, desktop */}
         <nav className="items-center hidden sm:flex">
           <Link href={"/archives"} className="mr-4">過去のメルマガ</Link>
-          <Link href={advertiseFormLink} className="mr-4">広告を出す</Link>
+          {/* <Link href={advertiseFormLink} className="mr-4">広告を出す</Link>
           <Link href={"/"} className="mr-4">仕事をさがす</Link>
-          <Link href={"/"} className="subscribe-button">仕事を載せる</Link>
+          <Link href={"/"} className="subscribe-button">仕事を載せる</Link> */}
         </nav>
         <label 
           id="hamburger"
@@ -62,12 +62,12 @@ export default function Header() {
             <li className="my-1">
               <Link href={"/archives"} className="underline p-1">過去のメルマガをみる</Link>
             </li>
-            <li className="my-1">
+            {/* <li className="my-1">
               <Link href={advertiseFormLink} className="underline p-1">
                 広告を出す
               </Link>
             </li>
-            {/* <li className="my-1">
+            <li className="my-1">
               <Link href={"/"} className="underline p-1">仕事をさがす</Link>
             </li>
             <li className="my-1">

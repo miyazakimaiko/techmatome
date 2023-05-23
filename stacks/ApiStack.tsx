@@ -49,8 +49,6 @@ export function ApiStack({ stack }: StackContext) {
 
   stack.addOutputs({
     MainApiUrl: mainApi.url,
-    SecretArn: cluster.secretArn,
-    ClusterIdentifier: cluster.clusterIdentifier,
   })
 
   return { 
