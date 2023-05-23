@@ -1,4 +1,5 @@
 import fs from "fs"
+import path from "path"
 import matter from "gray-matter"
 import Header from "@/components/header"
 import ArticleLink from "@/components/articleLink"
@@ -12,9 +13,13 @@ const CATEGORY_AS_TITLES = Object.freeze({
   ai: "AI"
 })
 
+const root = process.cwd()
+
 const getArticleContent = (category: string, date: string) => {
-  const file = `articles/${category}/${date}.md`
-  const content = fs.readFileSync(file, "utf8")
+  const file = `public/articles/${category}/${date}.md`
+  const source = path.join(root, file)
+
+  const content = fs.readFileSync(source, "utf8")
   const matterResult = matter(content)
   return matterResult
 }
@@ -50,7 +55,7 @@ export default function Article (props: any) {
     const articlesMetadata = getArticlesMetadata(category);
     const articleLinks = articlesMetadata.map((metadata) => (
       <ArticleLink key={metadata.slug} {...metadata} />
-    )).reverse();
+    )).reverse()
   
     return (
       <>
