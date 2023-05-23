@@ -27,24 +27,17 @@ export async function handler(event: SNSEvent) {
       },
       Subject: {
         Charset: "UTF-8",
-        Data: "【登録を完了してください】TiROニュースまとめ"
+        Data: "【登録を完了してください】TiROまとめ"
       }
     },
-    Source: "tiro.news.2023@gmail.com"
+    Source: "TiRO <tech@tiro.news>"
   })
 
   try {
     await client.send(emailCommand)
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ success: true }),
-    }
+    console.log("INFO: Verification email has been sent to a new subscriber.")
 
   } catch (error) {
     console.error(error)
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error }),
-    }
   }
 }

@@ -7,9 +7,9 @@ export function CronStack({ stack }: StackContext) {
     cluster 
   } = use(AuroraStack)
 
-  const cronScheculeString = "cron(59 10 * * ? *)"
+  const cronScheculeString = "cron(0 20 ? * SUN-THU *)"
 
-  const commonPermissions = [
+  const commonPermissions = [ 
     "rds-data",
     "ses:CreateTemplate",
     "ses:DeleteTemplate",

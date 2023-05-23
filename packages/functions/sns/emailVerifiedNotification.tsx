@@ -30,21 +30,14 @@ export async function handler(event: SNSEvent) {
         Data: "【登録完了】TiROニュースまとめ"
       }
     },
-    Source: "tiro.news.2023@gmail.com"
+    Source: "TiRO <tech@tiro.news>"
   })
 
   try {
     await ses.send(emailCommand)
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ success: true }),
-    }
+    console.log("INFO: Email has been verified and sent welcome email.")
 
   } catch (error) {
     console.error(error)
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error }),
-    }
   }
 }
