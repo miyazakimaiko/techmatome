@@ -37,16 +37,16 @@ export default function Subscribing() {
     }
 
     if (email) {
-      find(email).then(
-        (subscriber) => {
+      find(email)
+        .then((subscriber) => {
           setIsSubscribed(subscriber.found)
           setSubscribedCategory(subscriber)
-        },
-        () => setError(true)
-      ).finally(() => {
-        setLoading(false)
-        setProcessing(false)
-      })
+        })
+        .catch(() => setError(true))
+        .finally(() => {
+          setLoading(false)
+          setProcessing(false)
+        })
     }
   }, [email])
 
