@@ -8,7 +8,7 @@ export default function Home() {
       <h1>
         <Image
           src="/tiro-logo.svg"
-          alt="TiRO｜Geekのためのメルマガ｜毎朝５分のインプット"
+          alt="TiRO｜毎朝５分のインプット"
           width={130}
           height={24}
           priority
@@ -30,10 +30,8 @@ export default function Home() {
   const introText = (
     <div className="text-center pb-8">
       <p className="pb-6">
-        最新記事を読む時間がない。<strong>英語だと尚更。</strong><br/>TiROは、そんな<strong>Geekのための無料メルマガ</strong>です。
-      </p>
-      <p>
-        テクノロジーやプログラミングに関する<br/>興味深い記事を<strong>要約・翻訳</strong>して 毎朝お届けします。
+        無料でサクッと読める、<br/>Geek・エンジニアのためのメルマガ📩
+        <br/>英語の最新記事やブログを翻訳、要約して毎朝お届けします🎁
       </p>
     </div>
   )

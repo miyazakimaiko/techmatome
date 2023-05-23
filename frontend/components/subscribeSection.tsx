@@ -10,8 +10,8 @@ export default function SubscribeSection(props: any) {
       <SubscribeForm />
       <span className="text-sm pt-2">
         <Link href={`archives/${latestArticleSlug}`} className="underline">
-          毎朝4000人が読むメール
-        </Link>を受け取る📩
+          エンジニアが毎朝読むメール
+        </Link>をみてみる📩
       </span>
     </>
   )
