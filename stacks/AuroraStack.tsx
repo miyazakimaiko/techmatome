@@ -1,4 +1,4 @@
-import { RDS, StackContext } from "sst/constructs"
+import { RDS, Script, StackContext } from "sst/constructs"
 
 export function AuroraStack({ stack }: StackContext) {
 
@@ -7,6 +7,13 @@ export function AuroraStack({ stack }: StackContext) {
   const cluster = new RDS(stack, "Cluster", {
     engine: "postgresql11.13",
     defaultDatabaseName: DATABASE_NAME,
+  })
+
+  new Script(stack, "auroraCreateTableScript", {
+    onCreate: {
+      handler: "packages/functions/aurora/createTables.handler",
+      bind: [cluster],
+    },
   })
 
   stack.addOutputs({
