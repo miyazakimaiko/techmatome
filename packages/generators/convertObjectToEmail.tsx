@@ -1,12 +1,5 @@
-import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm"
 import { Article, Contents, Metadata } from "core/interfaces"
 import combineBlocksIntoDailyNewsHtml from "generators/combineBlocksIntoDailyNewsHtml"
-
-const ssm = new SSMClient({ region: "ap-northeast-1" })
-
-const getParamCommand = new GetParameterCommand({
-  Name: "/sst/tiro-news/site-url"
-})
 
 function generatePreheaderBlock(text: string) {
   return `
@@ -27,7 +20,7 @@ function generateMenuBlock() {
           <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
             <tr>
               <td class="alignment" style="text-align:center;font-size:0px;">
-                <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">ブラウザで読む</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">メルマガ一覧</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://docs.google.com/forms/d/e/1FAIpQLSe1elz3gKzyLDOTTAULu1qONCP3K0BzZiUbm-TzRQ4kh1bp-Q/viewform?usp=sf_link" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
+                <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">ブラウザで読む</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">メルマガ一覧</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://docs.google.com/forms/d/e/1FAIpQLSe1elz3gKzyLDOTTAULu1qONCP3K0BzZiUbm-TzRQ4kh1bp-Q/viewform?usp=sf_link" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
               </td>
             </tr>
           </table>
@@ -148,8 +141,7 @@ function generateArticleBlock(article: Article) {
 }
 
 async function generateEndingBlock() {
-  const { Parameter } = await ssm.send(getParamCommand)
-  const siteUrl = Parameter?.Value || "https://example.com"
+  const siteUrl = process.env.NEXT_PUBLIC_DOMAIN
 
   return `
     <div class="spacer_block block-28" style="height:50px;line-height:50px;font-size:1px;">&#8202;</div>

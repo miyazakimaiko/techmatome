@@ -1,21 +1,15 @@
 import { encrypt } from "helpers/crypto"
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm"
-
-const ssm = new SSMClient({ region: "ap-northeast-1" })
-const command = new GetParameterCommand({
-  Name: "/sst/tiro-news/site-url"
-})
+import { Config } from 'sst/node/config'
 
 export default async function getWelcomeTemplates(email: string): Promise<{html: string, text: string}> {
-  const { Parameter } = await ssm.send(command)
-  const siteUrl = Parameter?.Value || "https://example.com"
+  const PUBLIC_DOMAIN = Config.PUBLIC_DOMAIN
 
   const category = "all"
   const e = await encrypt(email)
   const c = await encrypt(category)
 
   const unsubscribeUrl = `
-    ${siteUrl}/unsubscribe?e=${e}&c=${c}&category=${category}
+    ${PUBLIC_DOMAIN}/unsubscribe?e=${e}&c=${c}&category=${category}
   `
 
   const text = `
@@ -119,7 +113,7 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
                                       <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
                                         <tr>
                                           <td class="alignment" style="text-align:center;font-size:0px;">
-                                            <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">登録</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">過去のメルマガ</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">求人情報</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://localhost:3000" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
+                                            <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">登録</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">過去のメルマガ</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">求人情報</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
                                           </td>
                                         </tr>
                                       </table>
@@ -156,57 +150,7 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
                                     </td>
                                   </tr>
                                 </table>
-                                <div class="spacer_block block-6" style="height:20px;line-height:20px;font-size:1px;">&#8202;</div>
-                                <table class="heading_block block-7" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                                  <tr>
-                                    <td class="pad">
-                                      <h3 style="margin: 0; color: #222222; direction: ltr; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;"><u>仕事を探す</u><br></h3>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <table class="paragraph_block block-8" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
-                                  <tr>
-                                    <td class="pad">
-                                      <div style="color:#222222;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:left;mso-line-height-alt:28.8px;">
-                                        <p style="margin: 0;"><strong>TiRO Job</strong>では、海外での求人情報がみられます。</p>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <table class="heading_block block-9" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                                  <tr>
-                                    <td class="pad">
-                                      <h3 style="margin: 0; color: #222222; direction: ltr; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder"><u>人材を探す</u><br></span></h3>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <table class="paragraph_block block-10" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
-                                  <tr>
-                                    <td class="pad">
-                                      <div style="color:#222222;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:left;mso-line-height-alt:28.8px;">
-                                        <p style="margin: 0;"><strong>TiRO Employer</strong>では、求人情報の掲載ができます。</p>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <table class="heading_block block-11" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                                  <tr>
-                                    <td class="pad">
-                                      <h3 style="margin: 0; color: #222222; direction: ltr; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder"><u>広告を出す</u><br></span></h3>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <table class="paragraph_block block-12" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
-                                  <tr>
-                                    <td class="pad">
-                                      <div style="color:#222222;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:left;mso-line-height-alt:28.8px;">
-                                        <p style="margin: 0;"><strong>TiROニュースまとめ</strong>に毎日載せることが可能です。</p>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </table>
                                 <div class="spacer_block block-13" style="height:15px;line-height:15px;font-size:1px;">&#8202;</div>
-                                <div class="spacer_block block-14" style="height:15px;line-height:15px;font-size:1px;">&#8202;</div>
                               </td>
                             </tr>
                           </tbody>

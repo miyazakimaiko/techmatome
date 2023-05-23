@@ -1,16 +1,18 @@
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm"
+import { Config } from 'sst/node/config'
 
-const ssm = new SSMClient({ region: "ap-northeast-1" })
-const command = new GetParameterCommand({
-  Name: "/sst/tiro-news/site-url"
-})
+declare module "sst/node/config" {
+  export interface ConfigTypes {
+    "PUBLIC_DOMAIN": string
+  }
+}
 
-export default async function getVerificationTemplates(email: string, token: string): Promise<{html: string, text: string}> {
-  const { Parameter } = await ssm.send(command)
-  const siteUrl = Parameter?.Value || "https://example.com"
+const PUBLIC_DOMAIN = Config.PUBLIC_DOMAIN
+
+export default async function getVerificationTemplates(email: string, token: string): 
+  Promise<{html: string, text: string}> {
 
   const verificationLink = `
-    ${siteUrl}/verify?email=${email}&token=${token}
+    ${PUBLIC_DOMAIN}/verify?email=${email}&token=${token}
   `
 
   const html = `

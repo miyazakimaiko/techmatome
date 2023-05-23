@@ -1,6 +1,9 @@
-import { StackContext, Topic } from "sst/constructs"
+import { StackContext, Topic, use } from "sst/constructs"
+import { ConfigStack } from "./ConfigStack";
 
 export function SnsStack({ stack }: StackContext) {
+
+  const { params } = use(ConfigStack)
 
   // send on creation
   const subscriberCreationTopic = new Topic(stack, "SubscriberCreationTopic", {
@@ -13,9 +16,9 @@ export function SnsStack({ stack }: StackContext) {
     [
       "ses:SendEmail", 
       "ses:SendRawEmail",
-      "ssm:GetParameter",
     ]
   )
+  subscriberCreationTopic.bind([params]);
 
   // send when verified
   const subscriberVerifiedTopic = new Topic(stack, "SubscriberVerifiedTopic", {
@@ -29,10 +32,11 @@ export function SnsStack({ stack }: StackContext) {
       "ses:SendEmail", 
       "ses:SendRawEmail", 
       "secretsmanager:GetSecretValue",
-      "ssm:GetParameter",
     ]
   )
+  subscriberVerifiedTopic.bind([params]);
 
+  // output
   stack.addOutputs({
     SubscriberCreationTopicArn: subscriberCreationTopic.topicArn,
     subscriberVerifiedTopicArn: subscriberVerifiedTopic.topicArn,
