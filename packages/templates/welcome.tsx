@@ -107,19 +107,6 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
                           <tbody>
                             <tr>
                               <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
-                                <table class="menu_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                                  <tr>
-                                    <td class="pad">
-                                      <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                                        <tr>
-                                          <td class="alignment" style="text-align:center;font-size:0px;">
-                                            <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">登録</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">過去のメルマガ</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">求人情報</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:15px;font-family:Arial, Helvetica, sans-serif;color:#222222;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:15px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
-                                          </td>
-                                        </tr>
-                                      </table>
-                                    </td>
-                                  </tr>
-                                </table>
                                 <table class="heading_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
                                   <tr>
                                     <td class="pad">
@@ -145,7 +132,7 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
                                   <tr>
                                     <td class="pad">
                                       <div style="color:#222222;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:left;mso-line-height-alt:28.8px;">
-                                        <p style="margin: 0;"><strong>TiROニュースまとめ</strong>にご登録いただきありがとうございます！このメールが迷惑メールフォルダに入っている場合「迷惑メールではない」を選択するか、このメールアドレスを連絡先リストに追加していただけますようお願いいたします。</p>
+                                        <p style="margin: 0;"><strong>TiROニュースまとめ</strong>にご登録いただきありがとうございます！このメールが迷惑メールフォルダに入っている場合、「迷惑メールではない」を選択するか、またはこのメールアドレスに「OK」と返信していただくと、迷惑メールボックスに入ることを防ぐことができます。</p>
                                       </div>
                                     </td>
                                   </tr>
