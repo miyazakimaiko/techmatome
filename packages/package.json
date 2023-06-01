@@ -9,6 +9,7 @@
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
     "@types/aws-lambda": "^8.10.115",
+    "@types/libmime": "^5.0.0",
     "@types/node": "^20.1.0",
     "sst": "^2.8.6",
     "vitest": "^0.31.0"
@@ -21,6 +22,7 @@
     "@aws-sdk/client-sns": "^3.332.0",
     "@aws-sdk/client-ssm": "^3.332.0",
     "kysely": "^0.24.2",
-    "kysely-data-api": "^0.2.0"
+    "kysely-data-api": "^0.2.0",
+    "libmime": "^5.2.1"
   }
 }
