@@ -10,8 +10,8 @@ import generateCustomUnsubscribeEndpoint
   from "generators/generateCustomUnsubscribeEndpoint"
 import { generateEmailSenderFromCategory } from "helpers/email"
 
-const s3 = new S3Client({ region: "ap-northeast-1" })
-const ses = new SESClient({ region: "ap-northeast-1" })
+const s3 = new S3Client({ region: "eu-west-1" })
+const ses = new SESClient({ region: "eu-west-1" })
 
 /**
  * This function runs when markdown file for the email contents is 

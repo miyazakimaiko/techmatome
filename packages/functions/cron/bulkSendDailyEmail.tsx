@@ -5,7 +5,7 @@ import generateCustomUnsubscribeEndpoint
   from "generators/generateCustomUnsubscribeEndpoint"
 import { generateEmailSenderFromCategory } from "helpers/email"
 
-const ses = new SESClient({ region: "ap-northeast-1" })
+const ses = new SESClient({ region: "eu-west-1" })
 
 async function getSubscribersByCategory(category: string) {
   let subscribers

@@ -11,8 +11,8 @@ import { SiteStack } from "./stacks/SiteStack"
 export default {
   config(_input) {
     return {
-      name: "tiro-news",
-      region: "ap-northeast-1",
+      name: "techmatome",
+      region: "eu-west-1",
     };
   },
   stacks(app) {
