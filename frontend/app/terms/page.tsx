@@ -13,7 +13,7 @@ export default function Terms() {
         {title}
         <article className="terms">
           <section>
-            TiRO（以下，「当社」といいます。）は，本ウェブサイト上で提供するサービス（以下,「本サービス」といいます。）における，ユーザーの個人情報の取扱いについて，以下のとおりプライバシーポリシー（以下，「本ポリシー」といいます。）を定めます。
+            Techまとめ（以下，「当社」といいます。）は，本ウェブサイト上で提供するサービス（以下,「本サービス」といいます。）における，ユーザーの個人情報の取扱いについて，以下のとおりプライバシーポリシー（以下，「本ポリシー」といいます。）を定めます。
           </section>
           <section>
             <h2>第1条（個人情報）</h2>
@@ -120,8 +120,8 @@ export default function Terms() {
               本ポリシーに関するお問い合わせは，下記の窓口までお願いいたします。
             </p>
             <p>
-              TiRO 宮崎舞子
-              <br/>Eメールアドレス：miyazaki@tiro.news
+              Techまとめ 宮崎舞子
+              <br/>Eメールアドレス：miyazaki@techmatome.com
             </p>
           </section>
         </article>

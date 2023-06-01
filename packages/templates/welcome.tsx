@@ -13,7 +13,7 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
   `
 
   const text = `
-    TiROニュースまとめにご登録いただきありがとうございます！
+    Techまとめにご登録いただきありがとうございます！
     このメールが迷惑メールフォルダに入っている場合「迷惑メールではない」を選択するか、
     このメールアドレスを連絡先リストに追加していただけますようお願いいたします。
   `
@@ -132,7 +132,7 @@ export default async function getWelcomeTemplates(email: string): Promise<{html:
                                   <tr>
                                     <td class="pad">
                                       <div style="color:#222222;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:left;mso-line-height-alt:28.8px;">
-                                        <p style="margin: 0;"><strong>TiROニュースまとめ</strong>にご登録いただきありがとうございます！このメールが迷惑メールフォルダに入っている場合、「迷惑メールではない」を選択するか、またはこのメールアドレスに「OK」と返信していただくと、迷惑メールボックスに入ることを防ぐことができます。</p>
+                                        <p style="margin: 0;"><strong>Techまとめ</strong>にご登録いただきありがとうございます！このメールが迷惑メールフォルダに入っている場合、「迷惑メールではない」を選択するか、このメールアドレスを連絡先リストに追加していただけますようお願いいたします。</p>
                                       </div>
                                     </td>
                                   </tr>

@@ -7,10 +7,10 @@ export default function Home() {
     <div className="flex flex-col items-center justify-between pt-4 sm:pt-8">
       <h1>
         <Image
-          src="/tiro-logo.svg"
-          alt="TiRO｜毎朝５分のインプット"
-          width={130}
-          height={24}
+          src="/Techまとめ.png"
+          alt="Techまとめ"
+          width={290}
+          height={82}
           priority
         />
       </h1>

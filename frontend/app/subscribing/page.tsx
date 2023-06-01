@@ -41,7 +41,7 @@ export default function Subscribing() {
         .then((subscriber) => {
           setIsSubscribed(subscriber.found)
           setSubscribedCategory(subscriber)
-        })
+        }, () => setError(true))
         .catch(() => setError(true))
         .finally(() => {
           setLoading(false)

@@ -30,7 +30,7 @@ export default function Verify() {
             ? `確認しています...` 
             : verified 
               ? `登録完了しました🎉` 
-              : `【無効のリンク】再び登録の手順を踏んでいただくか、support@tiro.newsへご連絡ください。`}
+              : `【無効のリンク】再び登録の手順を踏んでいただくか、miyazaki@techmatome.comへご連絡ください。`}
         </p>
         {verified 
           ? <div className="max-w-[200px] mx-auto my-8 flex flex-col underline">

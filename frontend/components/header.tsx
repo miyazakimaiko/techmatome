@@ -18,14 +18,7 @@ export default function Header() {
       <header className="w-full flex justify-between flex-none items-center p-2">
         <h1>
           <Link href={"/"}>
-            <Image
-              src="/tiro-logo.svg"
-              alt="TiRO｜毎朝５分のインプット"
-              width={0}
-              height={0}
-              style={{ height: '100%', width: 'auto' }}
-              priority
-            />
+            <h1 className="ml-4 font-medium">Techまとめ</h1>
           </Link>
         </h1>
 

@@ -2,7 +2,7 @@ import './globals.css'
 import Footer from '@/components/footer'
 
 export const metadata = {
-  title: 'TiRO | 毎朝５分のインプット',
+  title: 'Techまとめ | 毎朝５分のインプット',
   description: `無料でサクッと読める、Geek・エンジニアのためのメルマガ📩 英語の最新記事やブログを翻訳、要約して毎朝お届けします🎁`,
 }
 

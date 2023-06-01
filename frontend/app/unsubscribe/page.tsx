@@ -71,7 +71,7 @@ export default function Unsbscribe() {
         : completed
           ? <p>登録を解除しました。</p>
           : error 
-            ? <p>エラーが発生しました。お手数をおかけしますが、再度後ほど解除していただくか、support@tiro.newsにご連絡ください。</p>
+            ? <p>エラーが発生しました。お手数をおかけしますが、再度後ほど解除していただくか、miyazaki@techmatome.comにご連絡ください。</p>
             : <form 
                 ref={form} 
                 action="/subscribing" 

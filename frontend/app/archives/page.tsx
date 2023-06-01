@@ -12,13 +12,9 @@ export default function ArchivesTech() {
 
   const introText = (
     <div className="text-center pb-5 sm:leading-7">
-      <p className="pb-4">
-        最新記事を読む時間がない。<strong>英語だと尚更。</strong>
-        <br/>TiROは、そんな<strong>Geekのための無料メルマガ</strong>です。
-      </p>
-      <p>
-        テクノロジーやプログラミングに関する
-        <br/>興味深い記事を<strong>要約・翻訳</strong>して 毎朝お届けします。
+      <p className="pb-6">
+        無料でサクッと読める、<br/>Geek・エンジニアのためのメルマガ📩
+        <br/>英語の最新記事やブログを翻訳、要約して毎朝お届けします🎁
       </p>
     </div>
   )
