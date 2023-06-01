@@ -8,7 +8,7 @@ export function AuroraStack({ stack }: StackContext) {
     engine: "postgresql11.13",
     defaultDatabaseName: DATABASE_NAME,
     scaling: {
-      minCapacity: "ACU_2"
+      autoPause: stack.stage !== "prod",
     }
   })
 
