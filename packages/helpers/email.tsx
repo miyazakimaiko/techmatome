@@ -1,3 +1,5 @@
+import libmime from "libmime"
+
 export function generateEmailSenderFromCategory(category: string) {
   const senderCategoryName
   = category === "tech" ? " Tech"
@@ -9,5 +11,5 @@ export function generateEmailSenderFromCategory(category: string) {
     throw new Error(`Failed to generate sender source from category ${category}.`)
   }
 
-  return `TiRO${senderCategoryName}<tech@tiro.news>`
+  return `${senderCategoryName}${libmime.encodeWord("まとめ")} <miyazaki@techmatome.com>`
 }

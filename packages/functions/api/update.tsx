@@ -1,9 +1,8 @@
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns"
 import { Topic } from "sst/node/topic"
 import { TiroRds } from "core/rds"
-import { insertEmailVerificationToken } from "helpers/verificationToken"
 
-const sns = new SNSClient({ region: "ap-northeast-1" })
+const sns = new SNSClient({ region: "eu-west-1" })
 
 export async function handler(event: any) {
   try {
@@ -22,14 +21,11 @@ export async function handler(event: any) {
       .executeTakeFirst()
 
       if (!res?.verified) {
-        const token = await insertEmailVerificationToken(
-          TiroRds.db, body.email_address)
 
         const command = new PublishCommand({ 
           TopicArn: Topic.SubscriberCreationTopic.topicArn,
           Message: JSON.stringify({
             email: body.email_address,
-            token
           }),
         })
         await sns.send(command)

@@ -1,13 +1,15 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
 import { SNSEvent } from "aws-lambda"
+import libmime from "libmime"
 import getVerificationTemplates from "templates/verification"
 
-const client = new SESClient({ region: "ap-northeast-1" })
+const client = new SESClient({ region: "eu-west-1" })
 
 export async function handler(event: SNSEvent) {
   
-  const { email, token } = JSON.parse(event.Records[0].Sns.Message)
-  const { html, text } = await getVerificationTemplates(email, token);
+  const { email } = JSON.parse(event.Records[0].Sns.Message)
+  const { html, text } = await getVerificationTemplates(email)
+  const senderName = "Techまとめ"
 
   const emailCommand = new SendEmailCommand({
     Destination: {
@@ -27,10 +29,10 @@ export async function handler(event: SNSEvent) {
       },
       Subject: {
         Charset: "UTF-8",
-        Data: "【登録を完了してください】TiROまとめ"
+        Data: "【登録を完了してください】Techまとめニュースレター"
       }
     },
-    Source: "TiRO <tech@tiro.news>"
+    Source: `${libmime.encodeWord(senderName)} <miyazaki@techmatome.com>`
   })
 
   try {

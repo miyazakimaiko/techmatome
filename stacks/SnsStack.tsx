@@ -1,9 +1,16 @@
 import { StackContext, Topic, use } from "sst/constructs"
 import { ConfigStack } from "./ConfigStack";
+import { AuroraStack } from "./AuroraStack";
 
 export function SnsStack({ stack }: StackContext) {
 
-  const { params } = use(ConfigStack)
+  const { params,
+    cipherAlgoParam,
+    cipherKeyParam,
+    cipherIvParam,
+  } = use(ConfigStack)
+
+  const { cluster } = use(AuroraStack)
 
   // send on creation
   const subscriberCreationTopic = new Topic(stack, "SubscriberCreationTopic", {
@@ -18,7 +25,12 @@ export function SnsStack({ stack }: StackContext) {
       "ses:SendRawEmail",
     ]
   )
-  subscriberCreationTopic.bind([params]);
+  subscriberCreationTopic.bind([
+    params,
+    cipherAlgoParam,
+    cipherKeyParam,
+    cipherIvParam,
+  ])
 
   // send when verified
   const subscriberVerifiedTopic = new Topic(stack, "SubscriberVerifiedTopic", {
@@ -31,19 +43,47 @@ export function SnsStack({ stack }: StackContext) {
     [
       "ses:SendEmail", 
       "ses:SendRawEmail", 
-      "secretsmanager:GetSecretValue",
     ]
   )
-  subscriberVerifiedTopic.bind([params]);
+  subscriberVerifiedTopic.bind([
+    params,
+    cipherAlgoParam,
+    cipherKeyParam,
+    cipherIvParam,
+  ]);
+
+  // send on email receive
+  const subscriberRepliedTopic = new Topic(stack, "SubscriberRepliedTopic", {
+    subscribers: {
+      verifyEmailOnReceive: "packages/functions/sns/verifyEmailOnReceive.handler",
+    },
+  })
+  subscriberRepliedTopic.attachPermissionsToSubscriber(
+    "verifyEmailOnReceive",
+    [
+      "ses:SendEmail", 
+      "ses:SendRawEmail",
+    ]
+  )
+  subscriberRepliedTopic.bind([
+    params,
+    cipherAlgoParam,
+    cipherKeyParam,
+    cipherIvParam,
+    cluster,
+    subscriberVerifiedTopic
+  ])
 
   // output
   stack.addOutputs({
-    SubscriberCreationTopicArn: subscriberCreationTopic.topicArn,
+    subscriberCreationTopicArn: subscriberCreationTopic.topicArn,
+    subscriberRepliedTopicArn: subscriberRepliedTopic.topicArn,
     subscriberVerifiedTopicArn: subscriberVerifiedTopic.topicArn,
   })
 
   return { 
     subscriberCreationTopic,
+    subscriberRepliedTopic,
     subscriberVerifiedTopic,
   }
 }

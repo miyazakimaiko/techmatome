@@ -20,7 +20,7 @@ function generateMenuBlock() {
           <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
             <tr>
               <td class="alignment" style="text-align:center;font-size:0px;">
-                <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">ブラウザで読む</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://tiro.news" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">メルマガ一覧</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://docs.google.com/forms/d/e/1FAIpQLSe1elz3gKzyLDOTTAULu1qONCP3K0BzZiUbm-TzRQ4kh1bp-Q/viewform?usp=sf_link" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
+                <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://techmatome.com" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">ブラウザで読む</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://techmatome.com" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">メルマガ一覧</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://docs.google.com/forms/d/e/1FAIpQLSe1elz3gKzyLDOTTAULu1qONCP3K0BzZiUbm-TzRQ4kh1bp-Q/viewform?usp=sf_link" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
               </td>
             </tr>
           </table>
@@ -39,7 +39,7 @@ function generateMainHeadingBlock(metadata: Metadata) {
       <tr>
         <td class="pad">
           <h1 style="margin: 0; color: #060606; direction: ltr; font-family: Arial, Helvetica, sans-serif; font-size: 22px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">
-            <strong><span class="tinyMce-placeholder">TiRO ${category}まとめ</span></strong>
+            <strong><span class="tinyMce-placeholder">${category}まとめ</span></strong>
           </h1>
         </td>
       </tr>
@@ -149,9 +149,9 @@ async function generateEndingBlock() {
       <tr>
         <td class="pad">
           <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:left;mso-line-height-alt:28.8px;">
-            <p style="margin: 0; margin-bottom: 16px;">TiROまとめをお読み頂きありがとうございます！</p>
+            <p style="margin: 0; margin-bottom: 16px;">Techまとめをお読み頂きありがとうございます！</p>
             <p style="margin: 0; margin-bottom: 16px;">ご意見・ご感想等は、ぜひこのメールに返信していただけたら幸いです。</p>
-            <p style="margin: 0;">TiRO編集　宮崎</p>
+            <p style="margin: 0;">Techまとめ編集　宮崎</p>
           </div>
         </td>
       </tr>
