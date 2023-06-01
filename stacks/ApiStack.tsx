@@ -1,9 +1,15 @@
 import { Api, StackContext, use } from "sst/constructs"
 import { AuroraStack } from "./AuroraStack"
 import { SnsStack } from "./SnsStack"
+import { ConfigStack } from "./ConfigStack"
 
 export function ApiStack({ stack }: StackContext) {
 
+  const { 
+    cipherAlgoParam,
+    cipherKeyParam,
+    cipherIvParam,
+  } = use(ConfigStack)
   const { 
     cluster 
   } = use(AuroraStack)
@@ -13,12 +19,19 @@ export function ApiStack({ stack }: StackContext) {
   } = use(SnsStack)
 
   const mainApi = new Api(stack, "Api", {
+    cors: {
+      allowCredentials: true,
+      allowOrigins: ["http://localhost:3000", "https://techmatome.com"],
+    },
     defaults: {
       function: {
         bind: [
           cluster, 
           subscriberCreationTopic,
           subscriberVerifiedTopic,
+          cipherAlgoParam,
+          cipherKeyParam,
+          cipherIvParam,
         ],
       },
     },
@@ -26,16 +39,12 @@ export function ApiStack({ stack }: StackContext) {
       "GET   /find": "packages/functions/api/find.handler",
       "POST  /create": "packages/functions/api/create.handler",
       "PATCH /update/{email}": "packages/functions/api/update.handler",
-      "POST  /verify": "packages/functions/api/verify.handler",
       "POST  /unsubscribe": "packages/functions/api/unsubscribe.handler",
+      "POST  /resend-verification": "packages/functions/api/resendVerification.handler",
     },
   })
   mainApi.attachPermissionsToRoute(
     "POST /create", 
-    ["secretsmanager:GetSecretValue"]
-  )
-  mainApi.attachPermissionsToRoute(
-    "POST /verify", 
     ["secretsmanager:GetSecretValue"]
   )
   mainApi.attachPermissionsToRoute(
@@ -52,6 +61,7 @@ export function ApiStack({ stack }: StackContext) {
   })
 
   return { 
+    apiStack: mainApi,
     mainApiUrl: mainApi.url,
   }
 }

@@ -1,7 +1,14 @@
 import { StackContext, Cron, use } from "sst/constructs"
 import { AuroraStack } from "./AuroraStack"
+import { ConfigStack } from "./ConfigStack"
 
 export function CronStack({ stack }: StackContext) {
+
+  const { 
+    cipherAlgoParam,
+    cipherKeyParam,
+    cipherIvParam,
+  } = use(ConfigStack)
 
   const { 
     cluster 
@@ -21,7 +28,12 @@ export function CronStack({ stack }: StackContext) {
     schedule: cronScheculeString,
     job: {
       function: {
-        bind: [ cluster ],
+        bind: [ 
+          cluster,
+          cipherAlgoParam,
+          cipherKeyParam,
+          cipherIvParam,
+        ],
         handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {
           CATEGORY: "tech"
