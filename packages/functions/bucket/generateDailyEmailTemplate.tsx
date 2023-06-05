@@ -13,15 +13,15 @@ import { generateEmailSenderFromCategory } from "helpers/email"
 const s3 = new S3Client({ region: "eu-west-1" })
 const ses = new SESClient({ region: "eu-west-1" })
 
+const testEmailReceiver = "myzkmik19922@gmail.com"
+const category = process.env.BUCKET_CATEGORY
+
 /**
  * This function runs when markdown file for the email contents is 
  * uploaded to S3 bucket. It formats the .md file into SES email 
  * template, stores them, then send it to test receivers.
  */
 export async function handler(objectCreatedEvent: any) {
-
-  const testEmailReceiver = "myzkmik19922@gmail.com"
-  const category = process.env.BUCKET_CATEGORY
 
   console.log(`INFO(${category}): Object is uploaded to Markdown S3 bucket.`)
 
