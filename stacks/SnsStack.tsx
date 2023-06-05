@@ -4,7 +4,8 @@ import { AuroraStack } from "./AuroraStack";
 
 export function SnsStack({ stack }: StackContext) {
 
-  const { params,
+  const { 
+    domainParam,
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
@@ -26,7 +27,7 @@ export function SnsStack({ stack }: StackContext) {
     ]
   )
   subscriberCreationTopic.bind([
-    params,
+    domainParam,
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
@@ -46,7 +47,7 @@ export function SnsStack({ stack }: StackContext) {
     ]
   )
   subscriberVerifiedTopic.bind([
-    params,
+    domainParam,
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
@@ -66,7 +67,7 @@ export function SnsStack({ stack }: StackContext) {
     ]
   )
   subscriberRepliedTopic.bind([
-    params,
+    domainParam,
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,

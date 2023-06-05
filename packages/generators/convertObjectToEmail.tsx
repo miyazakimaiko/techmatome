@@ -1,5 +1,8 @@
+import { Config } from 'sst/node/config'
 import { Article, Contents, Metadata } from "core/interfaces"
 import combineBlocksIntoDailyNewsHtml from "generators/combineBlocksIntoDailyNewsHtml"
+
+const PUBLIC_DOMAIN = Config.PUBLIC_DOMAIN
 
 function generatePreheaderBlock(text: string) {
   return `
@@ -20,7 +23,7 @@ function generateMenuBlock() {
           <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
             <tr>
               <td class="alignment" style="text-align:center;font-size:0px;">
-                <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://techmatome.com" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">ブラウザで読む</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://techmatome.com" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">メルマガ一覧</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://docs.google.com/forms/d/e/1FAIpQLSe1elz3gKzyLDOTTAULu1qONCP3K0BzZiUbm-TzRQ4kh1bp-Q/viewform?usp=sf_link" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
+                <div class="menu-links"><!--[if mso]><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style=""><tr style="text-align:center;"><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://techmatome.com" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">ブラウザで読む</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://techmatome.com" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">メルマガ一覧</a><!--[if mso]></td><td><![endif]--><span class="sep" style="font-size:13px;font-family:Arial, Helvetica, sans-serif;color:#101112;">｜</span><!--[if mso]></td><![endif]--><!--[if mso]><td style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a href="https://techmatome.com/request-ads" target="_self" style="mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padding-right:5px;display:inline-block;color:#0e0e0e;font-family:Arial, Helvetica, sans-serif;font-size:13px;text-decoration:none;letter-spacing:normal;">広告を載せる</a><!--[if mso]></td><![endif]--><!--[if mso]></tr></table><![endif]--></div>
               </td>
             </tr>
           </table>
@@ -141,8 +144,6 @@ function generateArticleBlock(article: Article) {
 }
 
 async function generateEndingBlock() {
-  const siteUrl = process.env.NEXT_PUBLIC_DOMAIN
-
   return `
     <div class="spacer_block block-28" style="height:50px;line-height:50px;font-size:1px;">&#8202;</div>
     <table class="paragraph_block block-29" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
@@ -151,7 +152,7 @@ async function generateEndingBlock() {
           <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:left;mso-line-height-alt:28.8px;">
             <p style="margin: 0; margin-bottom: 16px;">Techまとめをお読み頂きありがとうございます！</p>
             <p style="margin: 0; margin-bottom: 16px;">ご意見・ご感想等は、ぜひこのメールに返信していただけたら幸いです。</p>
-            <p style="margin: 0;">Techまとめ編集　宮崎</p>
+            <p style="margin: 0;">Techまとめ　宮崎</p>
           </div>
         </td>
       </tr>
@@ -160,8 +161,8 @@ async function generateEndingBlock() {
     <table class="paragraph_block block-31" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
       <tr>
         <td class="pad">
-          <div style="color:#9a9a9a;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;">
-            <p style="margin: 0;">配信停止をご希望の場合は、<a href="${siteUrl}/{{dynamicUnsubscribeEndpoint}}">こちら</a>からお願いいたします。</p>
+          <div style="color:#9a9a9a;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;">
+            <p style="margin: 0;">配信停止をご希望の場合は、<a href="${PUBLIC_DOMAIN}/{{dynamicUnsubscribeEndpoint}}">こちら</a>からお願いいたします。</p>
           </div>
         </td>
       </tr>

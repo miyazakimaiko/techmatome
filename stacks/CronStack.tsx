@@ -14,7 +14,9 @@ export function CronStack({ stack }: StackContext) {
     cluster 
   } = use(AuroraStack)
 
-  const cronScheculeString = "cron(0 20 ? * SUN-THU *)"
+  const techCronSchecule = "cron(41 21 ? * SUN-THU *)"
+  const webCronSchecule = "cron(1 20 ? * SUN-THU *)"
+  const aiCronSchecule = "cron(2 20 ? * SUN-THU *)"
 
   const commonPermissions = [ 
     "rds-data",
@@ -25,7 +27,7 @@ export function CronStack({ stack }: StackContext) {
   ]
 
   const techCron = new Cron(stack, "TechCron", {
-    schedule: cronScheculeString,
+    schedule: techCronSchecule,
     job: {
       function: {
         bind: [ 
@@ -45,10 +47,15 @@ export function CronStack({ stack }: StackContext) {
   techCron.attachPermissions(commonPermissions)
 
   const webCron = new Cron(stack, "WebCron", {
-    schedule: cronScheculeString,
+    schedule: webCronSchecule,
     job: {
       function: {
-        bind: [ cluster ],
+        bind: [ 
+          cluster,
+          cipherAlgoParam,
+          cipherKeyParam,
+          cipherIvParam,
+        ],
         handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {
           CATEGORY: "web"
@@ -60,10 +67,15 @@ export function CronStack({ stack }: StackContext) {
   webCron.attachPermissions(commonPermissions)
 
   const aiCron = new Cron(stack, "aiCron", {
-    schedule: cronScheculeString,
+    schedule: aiCronSchecule,
     job: {
       function: {
-        bind: [ cluster ],
+        bind: [ 
+          cluster,
+          cipherAlgoParam,
+          cipherKeyParam,
+          cipherIvParam,
+        ],
         handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {
           CATEGORY: "ai"

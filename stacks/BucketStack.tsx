@@ -1,4 +1,5 @@
-import { Bucket, StackContext } from "sst/constructs"
+import { Bucket, StackContext, use } from "sst/constructs"
+import { ConfigStack } from "./ConfigStack"
 
 const commonPermissions = [
   "s3:GetObject",
@@ -11,14 +12,13 @@ const commonPermissions = [
 
 export function BucketStack({ stack }: StackContext) {
 
-  /**
-   * When markdown file is uploaded, those notifications run and 
-   * create & upload SES email template from the md file uploaded.
-   * At 21:00 UTC, Cron job checks if there's SES email template 
-   * with a target date suffix. If so, send it to subscribers.
-   */
+  const {
+    domainParam,
+    cipherAlgoParam,
+    cipherKeyParam,
+    cipherIvParam,
+  } = use(ConfigStack)
   
-
   /** 
    * Category: Tech
   */
@@ -34,6 +34,12 @@ export function BucketStack({ stack }: StackContext) {
           MD_BUCKET_NAME: techMdBucket.bucketName,
           BUCKET_CATEGORY: "tech",
         },
+        bind: [
+          domainParam,
+          cipherAlgoParam,
+          cipherKeyParam,
+          cipherIvParam,
+        ],
       },
       events: ["object_created"],
     },
@@ -57,6 +63,12 @@ export function BucketStack({ stack }: StackContext) {
           MD_BUCKET_NAME: webMdBucket.bucketName,
           BUCKET_CATEGORY: "web",
         },
+        bind: [
+          domainParam,
+          cipherAlgoParam,
+          cipherKeyParam,
+          cipherIvParam,
+        ],
       },
       events: ["object_created"],
     },
@@ -80,6 +92,12 @@ export function BucketStack({ stack }: StackContext) {
           MD_BUCKET_NAME: aiMdBucket.bucketName,
           BUCKET_CATEGORY: "ai",
         },
+        bind: [
+          domainParam,
+          cipherAlgoParam,
+          cipherKeyParam,
+          cipherIvParam,
+        ],
       },
       events: ["object_created"],
     },

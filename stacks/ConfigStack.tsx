@@ -13,7 +13,7 @@ export function ConfigStack({ stack }: StackContext) {
   const cipherKey = cipherSecrets.secretValueFromJson('cipherKey').toString()
   const cipherIv = cipherSecrets.secretValueFromJson('cipherIv').toString()
   
-  const params = new Config.Parameter(stack, "PUBLIC_DOMAIN", {
+  const domainParam = new Config.Parameter(stack, "PUBLIC_DOMAIN", {
     value: stack.stage === "prod" 
       ? `https://techmatome.com` : `http://localhost:3000`,
   })
@@ -31,7 +31,7 @@ export function ConfigStack({ stack }: StackContext) {
   })
 
   return {
-    params,
+    domainParam,
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
