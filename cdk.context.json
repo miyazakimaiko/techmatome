@@ -1,12 +1,11 @@
 {
-  "availability-zones:account=519775997184:region=eu-west-2": [
-    "eu-west-2a",
-    "eu-west-2b",
-    "eu-west-2c"
-  ],
   "availability-zones:account=519775997184:region=eu-west-1": [
     "eu-west-1a",
     "eu-west-1b",
     "eu-west-1c"
-  ]
+  ],
+  "hosted-zone:account=519775997184:domainName=techmatome.com:region=eu-west-1": {
+    "Id": "/hostedzone/Z09174143P5ECOXGBIWAM",
+    "Name": "techmatome.com."
+  }
 }
