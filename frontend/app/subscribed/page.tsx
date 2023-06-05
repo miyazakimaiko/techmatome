@@ -35,14 +35,14 @@ export default function Subscribed() {
   }
 
   const errorMessage = (
-    <div className="text-sm text-left max-w-md bg-black bg-opacity-5 py-2 px-4 mx-auto mt-6">
+    <div className="text-sm text-left max-w-md border-t border-t-black py-2 px-4 mx-auto mt-6">
       <div className="font-medium">再送に失敗しました。</div>
       <p>後ほど再度登録の手順を踏んでいただくか、miyazaki@techmatome.comへご連絡いただけると幸いです。</p>
     </div>
   )
 
   const beforeResentHelpMessage = (
-    <div className="text-sm text-left max-w-md bg-black bg-opacity-5 py-2 px-4 mx-auto mt-6">
+    <div className="text-sm text-left max-w-md border-t border-t-black py-2 px-4 mx-auto mt-6">
       <div className="font-medium">メールが届かない場合</div>
       <p>迷惑メール・プロモーションメールボックスに届いていませんか？<br/>
       届くまでに数分かかることがございます。<br/>
@@ -70,7 +70,7 @@ export default function Subscribed() {
   )
 
   const afterResentHelpMessage = (
-    <div className="text-sm text-left max-w-md bg-black bg-opacity-5 py-2 px-4 mx-auto mt-6">
+    <div className="text-sm text-left max-w-md border-t border-t-black py-2 px-4 mx-auto mt-6">
       <div className="font-medium">確認メールを再送しました。</div>
         <p>届くまでに数分かかることがございます。<br/>
         それでも届かない場合、再度登録の手順を踏んでいただくか、miyazaki@techmatome.comへご連絡いただけると幸いです。</p>
@@ -80,7 +80,9 @@ export default function Subscribed() {
   return (
     <>
       <main>
-        <p>確認メールを {emailValidated ? `${email} へ` : null} 送信しました。<br/>メールの手順に従って登録を完了してください。</p>
+        <div className="my-4">
+          <p>確認メールを {emailValidated ? `${email} へ` : null} 送信しました。<br/>メールの手順に従って登録を完了してください。</p>
+        </div>
         {
           error ? errorMessage :
           resending ? resendingSpinner :

@@ -1,11 +1,8 @@
 "use client"
 import Link from "next/link"
-import Image from "next/image"
 import { BaseSyntheticEvent, useState } from "react"
 
 export default function Header() {
-
-  const advertiseFormLink = "https://docs.google.com/forms/d/e/1FAIpQLSe1elz3gKzyLDOTTAULu1qONCP3K0BzZiUbm-TzRQ4kh1bp-Q/viewform?usp=sf_link"
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
@@ -25,8 +22,8 @@ export default function Header() {
         {/* nav for tablet, desktop */}
         <nav className="items-center hidden sm:flex">
           <Link href={"/archives"} className="mr-4">過去のメルマガ</Link>
-          {/* <Link href={advertiseFormLink} className="mr-4">広告を出す</Link>
-          <Link href={"/"} className="mr-4">仕事をさがす</Link>
+          <Link href={"/request-ads"} className="mr-4">広告を出す</Link>
+          {/* <Link href={"/"} className="mr-4">仕事をさがす</Link>
           <Link href={"/"} className="subscribe-button">仕事を載せる</Link> */}
         </nav>
         <label 
@@ -55,12 +52,12 @@ export default function Header() {
             <li className="my-1">
               <Link href={"/archives"} className="underline p-1">過去のメルマガをみる</Link>
             </li>
-            {/* <li className="my-1">
-              <Link href={advertiseFormLink} className="underline p-1">
+            <li className="my-1">
+              <Link href={"/request-ads"} className="underline p-1">
                 広告を出す
               </Link>
             </li>
-            <li className="my-1">
+            {/* <li className="my-1">
               <Link href={"/"} className="underline p-1">仕事をさがす</Link>
             </li>
             <li className="my-1">

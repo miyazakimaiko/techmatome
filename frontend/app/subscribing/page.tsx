@@ -89,14 +89,14 @@ export default function Subscribing() {
         onChange={e => setSubscribeToWeb(e.target.checked)}
       />
       <label htmlFor="box-2">Web制作・Web開発 👨‍💻</label>
-      <input 
+      {/* <input 
         type="checkbox"
         id="box-3"
         disabled={processing}
         checked={subscribeToAi}
         onChange={e => setSubscribeToAi(e.target.checked)}
       />
-      <label htmlFor="box-3">AI・機械学習 🧠</label>
+      <label htmlFor="box-3">AI・機械学習 🧠</label> */}
     </div>
   )
 
