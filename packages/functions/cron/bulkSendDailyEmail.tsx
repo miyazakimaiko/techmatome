@@ -3,11 +3,12 @@ import { DeleteTemplateCommand, SESClient, SendTemplatedEmailCommand }
 import { TiroRds } from "core/rds"
 import generateCustomUnsubscribeEndpoint 
   from "generators/generateCustomUnsubscribeEndpoint"
+import { SubscriberTable } from "core/interfaces"
 import { generateEmailSenderFromCategory } from "helpers/email"
 
 const ses = new SESClient({ region: "eu-west-1" })
 
-async function getSubscribersByCategory(category: string) {
+async function getSubscribersByCategory(category: string, offset: number, limit: number) {
   let subscribers
 
   if (category === "tech") {
@@ -16,6 +17,9 @@ async function getSubscribersByCategory(category: string) {
       .selectAll()
       .where("verified", "=", 1)
       .where("tech_subscribed", "=", 1)
+      .orderBy("created_at")
+      .offset(offset)
+      .limit(limit)
       .execute()
   }
   else if (category === "web") {
@@ -24,6 +28,9 @@ async function getSubscribersByCategory(category: string) {
       .selectAll()
       .where("verified", "=", 1)
       .where("web_subscribed", "=", 1)
+      .orderBy("created_at")
+      .offset(offset)
+      .limit(limit)
       .execute()
   }
   else if (category === "ai") {
@@ -32,11 +39,15 @@ async function getSubscribersByCategory(category: string) {
       .selectAll()
       .where("verified", "=", 1)
       .where("ai_subscribed", "=", 1)
+      .orderBy("created_at")
+      .offset(offset)
+      .limit(limit)
       .execute()
   }
   
   return subscribers
 }
+
 
 /**
  * This function runs one a day by CronStack to send daily news to
@@ -53,45 +64,54 @@ export async function handler(_: any) {
     return
   }
 
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  const tomorrowStr = tomorrow.toISOString().replace(/T.*/,'')
+
+  const sender = generateEmailSenderFromCategory(category)
+
+  let batchIndex = 0
+  const limit = 50
+  let subscribers = []
+
   try {
+    do {
+      console.log(`INFO: (${category}) started sending emails for the batch index ${batchIndex}`)
 
-    const subscribers = await getSubscribersByCategory(category)
-
-    if (!subscribers) {
-      console.log(`ERR(${category}): No subscribers found.`)
-      return
-    }
+      subscribers = await getSubscribersByCategory(
+        category, batchIndex * limit, limit) as SubscriberTable[]
   
-    let sentCount = 0
-  
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    const tomorrowStr = tomorrow.toISOString().replace(/T.*/,'')
-
-    const sender = generateEmailSenderFromCategory(category)
-  
-    for(const subscriber of subscribers) {
-      const unsubscribeEndpoint 
-        = await generateCustomUnsubscribeEndpoint(subscriber.email_address, "tech")
-  
-
-
-      const emailCommand = new SendTemplatedEmailCommand({
-        "Source": sender,
-        "Template": `daily-${category}-template-${tomorrowStr}`,
-        "Destination": {
-          "ToAddresses": [subscriber.email_address]
-        },
-        "TemplateData": 
-          `{ \"dynamicUnsubscribeEndpoint\":\"${unsubscribeEndpoint}\" }`
-      })
+      if (!subscribers) {
+        console.log(`(${category}): No subscribers found.`)
+        return
+      }
     
-      await ses.send(emailCommand)
-      sentCount++
-    }
+      let sentCount = 0
     
-    console.log(`INFO(${category}): Sent to total ${sentCount} 
-      out of ${subscribers.length} subscribers.`)
+      for(const subscriber of subscribers) {
+        const unsubscribeEndpoint 
+          = await generateCustomUnsubscribeEndpoint(subscriber.email_address, "tech")
+    
+        const emailCommand = new SendTemplatedEmailCommand({
+          "Source": sender,
+          "Template": `daily-${category}-template-${tomorrowStr}`,
+          "Destination": {
+            "ToAddresses": [subscriber.email_address]
+          },
+          "TemplateData": 
+            `{ \"dynamicUnsubscribeEndpoint\":\"${unsubscribeEndpoint}\" }`
+        })
+      
+        await ses.send(emailCommand)
+        sentCount++
+      }
+
+      console.log(`INFO: (${category}) batch index ${batchIndex} completed.`)
+      console.log(`INFO: (${category}) Sent to total ${sentCount} out of ${subscribers.length} subscribers.`)
+
+      batchIndex++
+      
+    } while(subscribers?.length >= limit)
 
     const deleteCommand = new DeleteTemplateCommand({
       "TemplateName": `daily-${category}-template-${tomorrowStr}`
@@ -101,6 +121,7 @@ export async function handler(_: any) {
     console.log(`INFO(${category}): email template for ${tomorrowStr} has been deleted.`)
     
   } catch (error: any) {
+    console.error(`Error occurred on bulksendDailyEmail handler at batchIndex ${batchIndex}: `, error)
     throw new Error(error)
   }
 }
