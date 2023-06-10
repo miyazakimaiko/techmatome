@@ -1,11 +1,8 @@
 import { TiroRds } from "core/rds"
-import { SNSClient, PublishCommand } from "@aws-sdk/client-sns"
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
-import { Topic } from "sst/node/topic"
+import { SESClient, SendEmailCommand, SendEmailCommandOutput } from "@aws-sdk/client-ses"
 import getWelcomeTemplates from "templates/welcome"
 import libmime from "libmime"
 
-const sns = new SNSClient({ region: "eu-west-1" })
 const ses = new SESClient({ region: "eu-west-1" })
 
 declare module "sst/node/topic" {
@@ -18,23 +15,24 @@ declare module "sst/node/topic" {
 
 export async function handler(event: any) {
   try {
+    const mailHeaders = 
+      JSON.parse(event.Records[0].Sns.Message).mail.headers
 
-    const message = JSON.parse(event.Records[0].Sns.Message)
-    const filtered = message.mail.headers.filter((obj: any) => (
+    const filteredSnsMessage = mailHeaders.filter((obj: any) => (
       obj.name === "Subject" || obj.name === "From"
     ))
 
-    console.log({filtered})
+    const { sender, subject } = 
+      await extractSenderAndSubject(filteredSnsMessage)
 
-    const res = await getSenderAndSubject(filtered)
+    const emailIsReplyToVerificationEmail = 
+      subject.includes("登録") && subject.includes("完了してください")
 
-    console.log({res})
+    if (emailIsReplyToVerificationEmail) {
+      await verify(sender)
 
-    console.log('res.subject.includes("登録"): ', res.subject.includes("登録"))
-    console.log('res.subject.includes("完了してください"): ', res.subject.includes("完了してください"))
-
-    if (res.subject.includes("登録") && res.subject.includes("完了してください")) {
-      verify(res.sender)
+    } else {
+      console.log("Email is not a reply to verification email. Ignoring")
     }
 
   } catch (e: any) {
@@ -42,7 +40,7 @@ export async function handler(event: any) {
   }
 }
 
-async function getSenderAndSubject(filtered: any) {
+async function extractSenderAndSubject(filtered: any) {
   const res = {
     subject: "",
     sender: "",
@@ -61,22 +59,17 @@ async function getSenderAndSubject(filtered: any) {
 }
 
 async function verify(email: string) {
-  try {    
-    console.log("STARTED VERIFY FUNCTION: ", email)
-    console.log({TiroRds})
-  
-    // const updateResult = await TiroRds.db
-    // .updateTable("subscriber")
-    // .set({ verified: 1 })
-    // .where("email_address", "=", email)
-    // .execute();
-  
-    console.log("DEBUGGING: targetEmail: ", email)
-  
-    // Publish SNS to be picked up by lambda emailing verified message
-    console.log("========= publishing topic command to send verified email =======")
-    await sendVerifiedNotification(email)
-    console.log("email verified: ", email)
+  try {  
+    const updateResList = await updateSubscriberTableByEmail(email)
+    const verifiedEmail = updateResList[0].email_address
+
+    if (verifiedEmail) {
+      const sendEmailOutput = await sendVerifiedNotificationToEmail(verifiedEmail)
+      console.log("sendEmailOutput: ", sendEmailOutput);
+      console.log("Email has been verified and sent welcome email to: ", verifiedEmail)
+    } else {
+      console.log("Email is already verified. Ignoring")
+    }
 
   } catch (error) {
     console.error("error: ", error)
@@ -84,8 +77,16 @@ async function verify(email: string) {
   }
 }
 
-export async function sendVerifiedNotification(email: string) {
-  
+async function updateSubscriberTableByEmail(email: string) {
+  return await TiroRds.db
+    .updateTable("subscriber")
+    .set({ verified: 1 })
+    .where("email_address", "=", email)
+    .returning('email_address')
+    .execute();
+}
+
+export async function sendVerifiedNotificationToEmail(email: string): Promise<SendEmailCommandOutput> {
   const { html, text } = await getWelcomeTemplates(email)
   const senderName = "Techまとめ"
 
@@ -113,11 +114,5 @@ export async function sendVerifiedNotification(email: string) {
     Source: `${libmime.encodeWord(senderName)} <miyazaki@techmatome.com>`
   })
 
-  try {
-    await ses.send(emailCommand)
-    console.log("INFO: Email has been verified and sent welcome email.")
-
-  } catch (error) {
-    console.error(error)
-  }
+  return await ses.send(emailCommand)
 }
