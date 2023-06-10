@@ -33,25 +33,6 @@ export function SnsStack({ stack }: StackContext) {
     cipherIvParam,
   ])
 
-  // send when verified
-  const subscriberVerifiedTopic = new Topic(stack, "SubscriberVerifiedTopic", {
-    subscribers: {
-      emailVerifiedNotification: "packages/functions/sns/emailVerifiedNotification.handler",
-    },
-  })
-  subscriberVerifiedTopic.attachPermissionsToSubscriber(
-    "emailVerifiedNotification",
-    [
-      "ses:SendEmail", 
-      "ses:SendRawEmail", 
-    ]
-  )
-  subscriberVerifiedTopic.bind([
-    domainParam,
-    cipherAlgoParam,
-    cipherKeyParam,
-    cipherIvParam,
-  ]);
 
   // send on email receive
   const subscriberRepliedTopic = new Topic(stack, "SubscriberRepliedTopic", {
@@ -72,19 +53,16 @@ export function SnsStack({ stack }: StackContext) {
     cipherKeyParam,
     cipherIvParam,
     cluster,
-    subscriberVerifiedTopic
   ])
 
   // output
   stack.addOutputs({
     subscriberCreationTopicArn: subscriberCreationTopic.topicArn,
     subscriberRepliedTopicArn: subscriberRepliedTopic.topicArn,
-    subscriberVerifiedTopicArn: subscriberVerifiedTopic.topicArn,
   })
 
   return { 
     subscriberCreationTopic,
     subscriberRepliedTopic,
-    subscriberVerifiedTopic,
   }
 }
