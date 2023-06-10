@@ -50,7 +50,12 @@ export default function Header() {
         <nav className={`w-full z-40 bg-white` + (mobileNavOpen ? " block" : " hidden")}>
           <ul className="text-center max-w-[12rem] mx-auto mt-4">
             <li className="my-1">
-              <Link href={"/archives"} className="underline p-1">過去のメルマガをみる</Link>
+              メニュー
+            </li>
+            <li className="my-1">
+              <Link href={"/archives"} className="underline p-1">
+                過去のメルマガをみる
+              </Link>
             </li>
             <li className="my-1">
               <Link href={"/request-ads"} className="underline p-1">
