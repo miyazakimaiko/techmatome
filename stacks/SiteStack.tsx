@@ -15,7 +15,8 @@ export function SiteStack({ stack }: StackContext) {
     environment: {
       NEXT_PUBLIC_DOMAIN: stack.stage === "prod" 
         ? `https://techmatome.com` : `http://localhost:3000`,
-      NEXT_PUBLIC_MAIN_API: mainApiUrl,
+      NEXT_PUBLIC_MAIN_API: stack.stage === "prod" 
+      ? `https://api.techmatome.com` : mainApiUrl,
     },
   });
 
