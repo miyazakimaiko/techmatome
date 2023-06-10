@@ -14,9 +14,9 @@ export function CronStack({ stack }: StackContext) {
     cluster 
   } = use(AuroraStack)
 
-  const techCronSchecule = "cron(41 21 ? * SUN-THU *)"
-  const webCronSchecule = "cron(1 20 ? * SUN-THU *)"
-  const aiCronSchecule = "cron(2 20 ? * SUN-THU *)"
+  const techCronSchecule = "cron(30 21 ? * SUN-THU *)"
+  const webCronSchecule = "cron(0 21 ? * SUN-THU *)"
+  const aiCronSchecule = "cron(0 21 ? * SUN-THU *)"
 
   const commonPermissions = [ 
     "rds-data",
