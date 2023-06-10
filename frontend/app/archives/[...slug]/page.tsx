@@ -8,9 +8,9 @@ import getArticlesMetadata from "@/functions/getArticlesMetadata"
 import Content from "./content"
 
 const CATEGORY_AS_TITLES = Object.freeze({
-  tech: "テック",
+  tech: "テック全般・AI",
   web: "Web制作・Web開発",
-  ai: "AI"
+  crypto: "クリプト・ブロックチェーン",
 })
 
 const root = process.cwd()
@@ -48,11 +48,15 @@ export default function Article (props: any) {
       </div>
     )
   
-    const articlesMetadata = getArticlesMetadata(category);
-    const articleLinks = articlesMetadata.map((metadata) => (
-      <ArticleLink key={metadata.slug} {...metadata} />
-    )).reverse()
-  
+    const articlesMetadata = getArticlesMetadata(category)
+
+
+    const articleLinks = 
+      articlesMetadata.map((metadata) => (
+        <ArticleLink key={metadata.slug} {...metadata} />
+      )).reverse()
+
+    console.log({articleLinks})
     return (
       <>
         <Header/>
@@ -61,7 +65,14 @@ export default function Article (props: any) {
           {emojis}
           {introText}
           <SubscribeSection category={category} />
-          <div className="py-16">{articleLinks}</div>
+          <div className="py-16">
+          {
+            articlesMetadata.length > 0
+            ?
+            articleLinks
+            :
+            "只今準備中です🙇"
+          }</div>
         </main>
       </>
     )
