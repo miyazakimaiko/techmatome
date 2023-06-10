@@ -22,14 +22,11 @@ export default function ArchivesTech() {
   const cagegoryLinks = (
     <div className="py-16">
       <article className="pb-4">
-        <Link href={`archives/tech`} className="underline">テックまとめ</Link>
+        <Link href={`archives/tech`} className="underline">テクノロジー全般まとめ</Link>
       </article>
-      <article className="pb-4">
+      {/* <article className="pb-4">
         <Link href={`archives/web`} className="underline">Web制作・Web開発まとめ</Link>
-      </article>
-      <article className="pb-4">
-        <Link href={`archives/ai`} className="underline">AIまとめ</Link>
-      </article>
+      </article> */}
     </div>
   )
 
