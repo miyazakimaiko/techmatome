@@ -15,20 +15,24 @@ export function ApiStack({ stack }: StackContext) {
   } = use(AuroraStack)
   const { 
     subscriberCreationTopic, 
-    subscriberVerifiedTopic 
   } = use(SnsStack)
 
   const mainApi = new Api(stack, "Api", {
+    customDomain:
+      stack.stage === 'prod' 
+      ? "api.techmatome.com" 
+      : undefined,
     cors: {
-      allowCredentials: true,
-      allowOrigins: ["http://localhost:3000", "https://techmatome.com"],
+      allowOrigins: 
+        stack.stage === 'prod' 
+        ? ["https://techmatome.com"] 
+        : ["http://localhost:3000"],
     },
     defaults: {
       function: {
         bind: [
           cluster, 
           subscriberCreationTopic,
-          subscriberVerifiedTopic,
           cipherAlgoParam,
           cipherKeyParam,
           cipherIvParam,
