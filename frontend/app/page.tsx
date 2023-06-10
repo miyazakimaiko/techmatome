@@ -5,14 +5,8 @@ export default function Home() {
 
   const title = (
     <div className="flex flex-col items-center justify-between pt-4 sm:pt-8">
-      <h1>
-        <Image
-          src="/Techまとめ.png"
-          alt="Techまとめ"
-          width={290}
-          height={82}
-          priority
-        />
+      <h1 className="text-3xl font-semibold mb-4">
+        Techまとめ
       </h1>
       <p className="text-sm pt-2">毎朝５分のインプット</p>
     </div>
