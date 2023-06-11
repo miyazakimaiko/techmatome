@@ -3,7 +3,7 @@ CREATE TABLE subscriber (
 	verified int DEFAULT 0 NOT NULL,
 	tech_subscribed int NOT NULL,
 	web_subscribed int NOT NULL,
-	ai_subscribed int NOT NULL,
+	crypto_subscribed int NOT NULL,
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP
 );
 

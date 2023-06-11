@@ -7,6 +7,7 @@ declare module "sst/node/config" {
     "PUBLIC_CIPHER_ALGO": string,
     "PUBLIC_CIPHER_KEY_STR": string,
     "PUBLIC_CIPHER_IV_STR": string,
+    "DB_API_KEY": string,
   }
 }
 

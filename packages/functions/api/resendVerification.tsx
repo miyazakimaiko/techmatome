@@ -1,27 +1,24 @@
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns"
 import { Topic } from "sst/node/topic"
-import { TiroRds } from "core/rds"
+import { XataClient } from "../../xata"
 
+const xata = new XataClient({ apiKey: process.env.DB_API_KEY })
 const sns = new SNSClient({ region: "eu-west-1" })
 
 export async function handler(event: any) {
   try {
     const { email } = event.queryStringParameters
 
-    console.log({email})
+    const subscribers = await xata.db.subscriber
+      .filter({ email_address: email })
+      .getMany()
 
-    const subscriber = await TiroRds.db
-      .selectFrom("subscriber")
-      .selectAll()
-      .where("email_address", "=", email)
-      .executeTakeFirst()
-
-    console.log({subscriber})
-
-    if (!subscriber) {
+    if (!subscribers[0]) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ error: "Cannot find subscriber" }),
+        body: JSON.stringify({ 
+          error: "Cannot find subscriber"
+        }),
       }
     }
 
@@ -29,7 +26,7 @@ export async function handler(event: any) {
     const command = new PublishCommand({ 
       TopicArn: Topic.SubscriberCreationTopic.topicArn,
       Message: JSON.stringify({
-        email: subscriber.email_address,
+        email: subscribers[0].email_address,
       }),
     })
 

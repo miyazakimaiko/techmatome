@@ -9,6 +9,7 @@ export function ApiStack({ stack }: StackContext) {
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
+    xataApiKeyParam,
   } = use(ConfigStack)
   const { 
     cluster 
@@ -37,12 +38,15 @@ export function ApiStack({ stack }: StackContext) {
           cipherKeyParam,
           cipherIvParam,
         ],
+        environment: { 
+          DB_API_KEY: xataApiKeyParam.value
+        },
       },
     },
     routes: {
       "GET   /find": "packages/functions/api/find.handler",
       "POST  /create": "packages/functions/api/create.handler",
-      "PATCH /update/{email}": "packages/functions/api/update.handler",
+      "PATCH /update": "packages/functions/api/update.handler",
       "POST  /unsubscribe": "packages/functions/api/unsubscribe.handler",
       "POST  /resend-verification": "packages/functions/api/resendVerification.handler",
     },
@@ -52,7 +56,7 @@ export function ApiStack({ stack }: StackContext) {
     ["secretsmanager:GetSecretValue"]
   )
   mainApi.attachPermissionsToRoute(
-    "PATCH /update/{email}", 
+    "PATCH /update", 
     ["secretsmanager:GetSecretValue"]
   )
   mainApi.attachPermissionsToRoute(

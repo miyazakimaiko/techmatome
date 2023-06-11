@@ -9,6 +9,7 @@ export function SnsStack({ stack }: StackContext) {
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
+    xataApiKeyParam
   } = use(ConfigStack)
 
   const { cluster } = use(AuroraStack)
@@ -52,6 +53,7 @@ export function SnsStack({ stack }: StackContext) {
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
+    xataApiKeyParam,
     cluster,
   ])
 

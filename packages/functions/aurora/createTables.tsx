@@ -10,7 +10,7 @@ export async function handler(_: any) {
       .addColumn('verified', 'integer', (col) => col.defaultTo(0).notNull())
       .addColumn('tech_subscribed', 'integer', (col) => col.defaultTo(0).notNull())
       .addColumn('web_subscribed', 'integer', (col) => col.defaultTo(0).notNull())
-      .addColumn('ai_subscribed', 'integer', (col) => col.defaultTo(0).notNull())
+      .addColumn('crypto_subscribed', 'integer', (col) => col.defaultTo(0).notNull())
       .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`now()`).notNull())
       .execute()
 

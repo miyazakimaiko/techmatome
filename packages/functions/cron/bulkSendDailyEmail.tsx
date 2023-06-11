@@ -38,7 +38,7 @@ async function getSubscribersByCategory(category: string, offset: number, limit:
       .selectFrom("subscriber")
       .selectAll()
       .where("verified", "=", 1)
-      .where("ai_subscribed", "=", 1)
+      .where("crypto_subscribed", "=", 1)
       .orderBy("created_at")
       .offset(offset)
       .limit(limit)

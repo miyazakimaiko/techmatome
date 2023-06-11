@@ -13,16 +13,33 @@ export default function Subscribing() {
   const searchParams = useSearchParams()
   const email = searchParams.get("email")
 
+  const [id, setId] = useState("")
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [subscribeToWeb, setSubscribeToWeb] = useState(false)
-  const [subscribeToAi, setSubscribeToAi] = useState(false)
+  const [subscribeToCrypto, setSubscribeToCrypto] = useState(false)
   const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState(false)
 
   const { push } = useRouter();
 
-  useEffect(() => {   
+  useEffect(() => {
+
+    async function findSubscriberAndMapResponse(email: string) {
+      const res = await find(email)
+      
+      if (res.found && res.data) {
+        setId(res.data.id)
+        setIsSubscribed(res.found)
+        setSubscribedCategory(res.data)
+      }
+      else {
+        setError(true)
+      }
+      setLoading(false)
+      setProcessing(false)
+    }
+
     async function find(email: string): Promise<FindSubscriberPayload> {
       return new Promise(async (resolve, reject) => {
         const subscriber = await findSubscriber(email)
@@ -31,22 +48,13 @@ export default function Subscribing() {
       })
     }
 
-    function setSubscribedCategory(subscriber: FindSubscriberPayload) {
-      setSubscribeToWeb(subscriber.data?.web_subscribed === 1)
-      setSubscribeToAi(subscriber.data?.ai_subscribed === 1)
+    function setSubscribedCategory(subscriber: Subscriber) {
+      setSubscribeToWeb(subscriber.web_subscribed === 1)
+      setSubscribeToCrypto(subscriber.crypto_subscribed === 1)
     }
 
     if (email) {
-      find(email)
-        .then((subscriber) => {
-          setIsSubscribed(subscriber.found)
-          setSubscribedCategory(subscriber)
-        }, () => setError(true))
-        .catch(() => setError(true))
-        .finally(() => {
-          setLoading(false)
-          setProcessing(false)
-        })
+      findSubscriberAndMapResponse(email)
     }
   }, [email])
 
@@ -56,14 +64,15 @@ export default function Subscribing() {
     try {
       setProcessing(true)
       const res = await addUpdateSubscriber(isSubscribed, {
+        id,
         email_address: email,
         tech_subscribed: 1,
         web_subscribed: subscribeToWeb ? 1 : 0,
-        ai_subscribed: subscribeToAi ? 1 : 0,
+        crypto_subscribed: subscribeToCrypto ? 1 : 0,
       } as Subscriber)
 
       if (res.success) {
-        if (res.type === "created"|| !res.verified) {
+        if (res.type === "created" || !res.verified) {
           push(`/subscribed?email=${email}`)
         } 
         else if (res.type === "updated") {
@@ -73,6 +82,7 @@ export default function Subscribing() {
 
     } catch (e: any) {
       console.error({e})
+      setProcessing(false)
       setError(true)
     }
   }
