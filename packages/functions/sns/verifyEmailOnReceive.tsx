@@ -1,7 +1,11 @@
-import { TiroRds } from "core/rds"
-import { SESClient, SendEmailCommand, SendEmailCommandOutput } from "@aws-sdk/client-ses"
-import getWelcomeTemplates from "templates/welcome"
 import libmime from "libmime"
+import { Config } from 'sst/node/config'
+import { SESClient, SendEmailCommand, SendEmailCommandOutput } 
+  from "@aws-sdk/client-ses"
+import getWelcomeTemplates from "templates/welcome"
+import { XataClient } from "../../xata"
+
+const xata = new XataClient({ apiKey: Config.DB_API_KEY })
 
 const ses = new SESClient({ region: "eu-west-1" })
 
@@ -60,13 +64,12 @@ async function extractSenderAndSubject(filtered: any) {
 
 async function verify(email: string) {
   try {  
-    const updateResList = await updateSubscriberTableByEmail(email)
-    const verifiedEmail = updateResList[0].email_address
+    const res = await updateSubscriberTableByEmail(email)
 
-    if (verifiedEmail) {
-      const sendEmailOutput = await sendVerifiedNotificationToEmail(verifiedEmail)
-      console.log("sendEmailOutput: ", sendEmailOutput);
-      console.log("Email has been verified and sent welcome email to: ", verifiedEmail)
+    if (res && res.email_address) {
+      await sendWelcomeEmail(res.email_address)
+      console.log(
+        "Email has been verified and sent welcome email to: ", res.email_address)
     } else {
       console.log("Email is already verified. Ignoring")
     }
@@ -78,15 +81,21 @@ async function verify(email: string) {
 }
 
 async function updateSubscriberTableByEmail(email: string) {
-  return await TiroRds.db
-    .updateTable("subscriber")
-    .set({ verified: 1 })
-    .where("email_address", "=", email)
-    .returning('email_address')
-    .execute();
+  const subscribers = await xata.db.subscriber
+  .filter({ email_address: email })
+  .getMany();
+
+  const target = subscribers[0]
+
+  if (target) {
+    return await xata.db.subscriber.update(target.id, { 
+      verified: 1,
+    })
+  }
+  else throw new Error("No subscriber found")
 }
 
-export async function sendVerifiedNotificationToEmail(email: string): Promise<SendEmailCommandOutput> {
+export async function sendWelcomeEmail(email: string): Promise<SendEmailCommandOutput> {
   const { html, text } = await getWelcomeTemplates(email)
   const senderName = "Techまとめ"
 

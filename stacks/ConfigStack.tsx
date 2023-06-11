@@ -14,8 +14,10 @@ export function ConfigStack({ stack }: StackContext) {
   const cipherIv = cipherSecrets.secretValueFromJson('cipherIv').toString()
   
   const domainParam = new Config.Parameter(stack, "PUBLIC_DOMAIN", {
-    value: stack.stage === "prod" 
-      ? `https://techmatome.com` : `http://localhost:3000`,
+    value: 
+      stack.stage === "prod" 
+      ? `https://techmatome.com` 
+      : `http://localhost:3000`,
   })
 
   const cipherAlgoParam = new Config.Parameter(stack, "PUBLIC_CIPHER_ALGO", {
@@ -30,10 +32,24 @@ export function ConfigStack({ stack }: StackContext) {
     value: cipherIv,
   })
 
+  const xataApiKey = 
+    Secret.fromSecretNameV2(
+      stack,
+      'xataApiKey',
+      'techmatome/xata'
+    )
+    .secretValueFromJson("xataApiKey")
+    .toString()
+
+  const xataApiKeyParam = new Config.Parameter(stack, "DB_API_KEY", {
+    value: xataApiKey,
+  })
+
   return {
     domainParam,
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
+    xataApiKeyParam,
   }
 }

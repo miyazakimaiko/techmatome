@@ -1,35 +1,31 @@
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns"
 import { Topic } from "sst/node/topic"
-import { TiroRds } from "core/rds"
+import { XataClient } from "../../xata"
 
+const xata = new XataClient({ apiKey: process.env.DB_API_KEY })
 const sns = new SNSClient({ region: "eu-west-1" })
 
 export async function handler(event: any) {
   try {
-    const { email } = event.pathParameters
+    const { id } = event.queryStringParameters
     const body = JSON.parse(event.body)
 
-    const res = await TiroRds.db
-      .updateTable("subscriber")
-      .set({
-        tech_subscribed: body.tech_subscribed,
-        web_subscribed: body.web_subscribed,
-        ai_subscribed: body.ai_subscribed,
+    const res = await xata.db.subscriber.update(id, { 
+      tech_subscribed: body.tech_subscribed,
+      web_subscribed: body.web_subscribed,
+      crypto_subscribed: body.crypto_subscribed,
+    })
+
+    if (res && !res.verified) {
+
+      const command = new PublishCommand({ 
+        TopicArn: Topic.SubscriberCreationTopic.topicArn,
+        Message: JSON.stringify({
+          email: res.email_address,
+        }),
       })
-      .where("email_address", "=", email)
-      .returningAll()
-      .executeTakeFirst()
-
-      if (!res?.verified) {
-
-        const command = new PublishCommand({ 
-          TopicArn: Topic.SubscriberCreationTopic.topicArn,
-          Message: JSON.stringify({
-            email: body.email_address,
-          }),
-        })
-        await sns.send(command)
-      }
+      await sns.send(command)
+    }
 
     return {
       statusCode: 200,

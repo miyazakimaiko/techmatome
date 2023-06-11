@@ -1,20 +1,20 @@
-import { TiroRds } from "core/rds"
+import { XataClient } from "../../xata"
+
+const xata = new XataClient({ apiKey: process.env.DB_API_KEY })
 
 export async function handler(event: any) {
   try {
     const { email } = event.queryStringParameters
 
-    const subscriber = await TiroRds.db
-      .selectFrom("subscriber")
-      .selectAll()
-      .where("email_address", "=", email)
-      .executeTakeFirst()
+    const subscribers = await xata.db.subscriber
+      .filter({ email_address: email })
+      .getMany()
 
     return {
       statusCode: 200,
       body: JSON.stringify({ 
-        found: Boolean(subscriber),
-        data: subscriber
+        found: Boolean(subscribers[0]),
+        data: subscribers[0]
       })
     }
 

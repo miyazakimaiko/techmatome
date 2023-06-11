@@ -7,14 +7,13 @@ export default async function addUpdateSubscriber(isSubscribed: boolean, subscri
     let payload
   
     const body = {
-      email_address: subscriber.email_address,
       tech_subscribed: subscriber.tech_subscribed,
       web_subscribed: subscriber.web_subscribed,
-      ai_subscribed: subscriber.ai_subscribed,
+      crypto_subscribed: subscriber.crypto_subscribed,
     }
     
     if (isSubscribed) {
-      payload = await fetch(`${updateEndpoint}/update/${subscriber.email_address}`, {
+      payload = await fetch(`${updateEndpoint}/update?id=${subscriber.id}`, {
         method: "PATCH",
         body: JSON.stringify(body),
       })

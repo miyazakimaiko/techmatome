@@ -1,8 +1,11 @@
-import { TiroRds } from "core/rds"
 import { decrypt } from "helpers/crypto"
-import { UpdateObject } from "kysely"
-import { Database } from "core/interfaces"
+import { XataClient } from "../../xata"
 
+const xata = new XataClient({ apiKey: process.env.DB_API_KEY })
+
+async function deleteSubscriberById(id: string) {
+  return await xata.db.subscriber.delete(id)
+}
 /**
  * This unsubscribe function updates the subscribed category of 
  * the user to 0. After update, check if all of their subscriptions are 0.
@@ -16,23 +19,24 @@ export async function handler(event: any) {
     const category = await decrypt(c)
     const email = await decrypt(e)
 
-    const subscriber = await TiroRds.db
-      .selectFrom("subscriber")
-      .selectAll()
-      .where("email_address", "=", email)
-      .executeTakeFirst()
+    const subscribers = await xata.db.subscriber
+      .filter({ email_address: email })
+      .getMany()
+
+    const subscriber = subscribers[0]
 
     if (!subscriber) {
       throw new Error("Subscriber does not exist")
     }
 
-    const updateValues = {} as UpdateObject<Database, "subscriber", "subscriber">
+    const updateValues = {
+      tech_subscribed: 0,
+      web_subscribed: 0,
+      crypto_subscribed: 0,
+    }
 
     if (category === "all") {
-      await TiroRds.db
-        .deleteFrom("subscriber")
-        .where("email_address", "=", email)
-        .execute()
+      await deleteSubscriberById(subscriber.id)
 
       return {
         statusCode: 200,
@@ -73,9 +77,9 @@ export async function handler(event: any) {
         }
       }    
     }
-    else if (category === "ai") {
-      if (subscriber.ai_subscribed === 1) {
-        updateValues.ai_subscribed = 0
+    else if (category === "crypto") {
+      if (subscriber.crypto_subscribed === 1) {
+        updateValues.crypto_subscribed = 0
       }
       else {
         return {
@@ -89,21 +93,17 @@ export async function handler(event: any) {
       }    
     }
 
-    const [res] = await TiroRds.db
-      .updateTable("subscriber")
-      .set(updateValues)
-      .where("email_address", "=", email)
-      .returningAll()
-      .execute()
+    const res = await xata.db.subscriber.update(subscriber.id, { 
+      ...updateValues
+    })
 
-    if ((res.tech_subscribed
-        + res.web_subscribed
-        + res.ai_subscribed) === 0) {
-          await TiroRds.db
-            .deleteFrom("subscriber")
-            .where("email_address", "=", email)
-            .execute()
-        }
+    if (res && 
+      (res.tech_subscribed
+      + res.web_subscribed
+      + res.crypto_subscribed) === 0
+    ) {
+      deleteSubscriberById(subscriber.id)
+    }
 
     return {
       statusCode: 200,

@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Maiko-Miyazaki-s-workspace-im8jpk.eu-west-1.xata.sh/db/techmatome",
+  "codegen": {
+    "output": "packages/xata.ts"
+  }
+}
