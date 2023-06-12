@@ -1,6 +1,5 @@
 import { StackContext, Topic, use } from "sst/constructs"
-import { ConfigStack } from "./ConfigStack";
-import { AuroraStack } from "./AuroraStack";
+import { ConfigStack } from "./ConfigStack"
 
 export function SnsStack({ stack }: StackContext) {
 
@@ -12,12 +11,11 @@ export function SnsStack({ stack }: StackContext) {
     xataApiKeyParam
   } = use(ConfigStack)
 
-  const { cluster } = use(AuroraStack)
-
   // send on creation
   const subscriberCreationTopic = new Topic(stack, "SubscriberCreationTopic", {
     subscribers: {
-      emailVerificationLink: "packages/functions/sns/emailVerificationLink.handler",
+      emailVerificationLink: 
+        "packages/functions/sns/emailVerificationLink.handler",
     },
   })
   subscriberCreationTopic.attachPermissionsToSubscriber(
@@ -32,6 +30,7 @@ export function SnsStack({ stack }: StackContext) {
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
+    xataApiKeyParam,
   ])
 
 
@@ -54,7 +53,6 @@ export function SnsStack({ stack }: StackContext) {
     cipherKeyParam,
     cipherIvParam,
     xataApiKeyParam,
-    cluster,
   ])
 
   // output

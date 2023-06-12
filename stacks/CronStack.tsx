@@ -1,5 +1,4 @@
 import { StackContext, Cron, use } from "sst/constructs"
-import { AuroraStack } from "./AuroraStack"
 import { ConfigStack } from "./ConfigStack"
 
 export function CronStack({ stack }: StackContext) {
@@ -8,13 +7,10 @@ export function CronStack({ stack }: StackContext) {
     cipherAlgoParam,
     cipherKeyParam,
     cipherIvParam,
+    xataApiKeyParam
   } = use(ConfigStack)
 
-  const { 
-    cluster 
-  } = use(AuroraStack)
-
-  const techCronSchecule = "cron(30 21 ? * SUN-THU *)"
+  const techCronSchecule = "cron(16 0 ? * SUN-THU *)"
   const webCronSchecule = "cron(0 21 ? * SUN-THU *)"
   const aiCronSchecule = "cron(0 21 ? * SUN-THU *)"
 
@@ -31,10 +27,10 @@ export function CronStack({ stack }: StackContext) {
     job: {
       function: {
         bind: [ 
-          cluster,
           cipherAlgoParam,
           cipherKeyParam,
           cipherIvParam,
+          xataApiKeyParam,
         ],
         handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {
@@ -51,10 +47,10 @@ export function CronStack({ stack }: StackContext) {
     job: {
       function: {
         bind: [ 
-          cluster,
           cipherAlgoParam,
           cipherKeyParam,
           cipherIvParam,
+          xataApiKeyParam,
         ],
         handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {
@@ -71,10 +67,10 @@ export function CronStack({ stack }: StackContext) {
     job: {
       function: {
         bind: [ 
-          cluster,
           cipherAlgoParam,
           cipherKeyParam,
           cipherIvParam,
+          xataApiKeyParam,
         ],
         handler: "packages/functions/cron/bulkSendDailyEmail.handler",
         environment: {

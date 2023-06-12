@@ -1,9 +1,12 @@
 import { Api, StackContext, use } from "sst/constructs"
-import { AuroraStack } from "./AuroraStack"
 import { SnsStack } from "./SnsStack"
 import { ConfigStack } from "./ConfigStack"
 
 export function ApiStack({ stack }: StackContext) {
+
+  if (!process.env.PUBLIC_DOMAIN) {
+    throw new Error("PUBLIC_DOMAIN is not defined")
+  }
 
   const { 
     cipherAlgoParam,
@@ -11,9 +14,7 @@ export function ApiStack({ stack }: StackContext) {
     cipherIvParam,
     xataApiKeyParam,
   } = use(ConfigStack)
-  const { 
-    cluster 
-  } = use(AuroraStack)
+
   const { 
     subscriberCreationTopic, 
   } = use(SnsStack)
@@ -26,13 +27,12 @@ export function ApiStack({ stack }: StackContext) {
     cors: {
       allowOrigins: 
         stack.stage === 'prod' 
-        ? ["https://techmatome.com"] 
+        ? [process.env.PUBLIC_DOMAIN] 
         : ["http://localhost:3000"],
     },
     defaults: {
       function: {
         bind: [
-          cluster, 
           subscriberCreationTopic,
           cipherAlgoParam,
           cipherKeyParam,
@@ -51,18 +51,6 @@ export function ApiStack({ stack }: StackContext) {
       "POST  /resend-verification": "packages/functions/api/resendVerification.handler",
     },
   })
-  mainApi.attachPermissionsToRoute(
-    "POST /create", 
-    ["secretsmanager:GetSecretValue"]
-  )
-  mainApi.attachPermissionsToRoute(
-    "PATCH /update", 
-    ["secretsmanager:GetSecretValue"]
-  )
-  mainApi.attachPermissionsToRoute(
-    "POST /unsubscribe", 
-    ["secretsmanager:GetSecretValue"]
-  )
 
   stack.addOutputs({
     MainApiUrl: mainApi.url,
