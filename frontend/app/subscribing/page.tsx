@@ -26,18 +26,21 @@ export default function Subscribing() {
   useEffect(() => {
 
     async function findSubscriberAndMapResponse(email: string) {
-      const res = await find(email)
+      try {
+        const res = await find(email)
+        
+        if (res.found && res.data) {
+          setId(res.data.id)
+          setIsSubscribed(res.found)
+          setSubscribedCategory(res.data)
+        }
+        setLoading(false)
+        setProcessing(false)
       
-      if (res.found && res.data) {
-        setId(res.data.id)
-        setIsSubscribed(res.found)
-        setSubscribedCategory(res.data)
-      }
-      else {
+      } catch (error) {
+        console.log("error occurred while trying to find subscriber: ", error)
         setError(true)
       }
-      setLoading(false)
-      setProcessing(false)
     }
 
     async function find(email: string): Promise<FindSubscriberPayload> {

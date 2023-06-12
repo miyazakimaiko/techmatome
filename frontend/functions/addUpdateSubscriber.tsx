@@ -7,6 +7,7 @@ export default async function addUpdateSubscriber(isSubscribed: boolean, subscri
     let payload
   
     const body = {
+      email_address: subscriber.email_address,
       tech_subscribed: subscriber.tech_subscribed,
       web_subscribed: subscriber.web_subscribed,
       crypto_subscribed: subscriber.crypto_subscribed,
