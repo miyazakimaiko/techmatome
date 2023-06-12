@@ -1,51 +1,69 @@
+import { Config } from 'sst/node/config'
 import { DeleteTemplateCommand, SESClient, SendTemplatedEmailCommand } 
   from "@aws-sdk/client-ses"
-import { TiroRds } from "core/rds"
 import generateCustomUnsubscribeEndpoint 
   from "generators/generateCustomUnsubscribeEndpoint"
-import { SubscriberTable } from "core/interfaces"
 import { generateEmailSenderFromCategory } from "helpers/email"
+import { XataClient } from "../../xata"
+
+const xata = new XataClient({ apiKey: Config.DB_API_KEY })
 
 const ses = new SESClient({ region: "eu-west-1" })
 
 async function getSubscribersByCategory(category: string, offset: number, limit: number) {
-  let subscribers
+  let page
 
   if (category === "tech") {
-    subscribers = await TiroRds.db
-      .selectFrom("subscriber")
-      .selectAll()
-      .where("verified", "=", 1)
-      .where("tech_subscribed", "=", 1)
-      .orderBy("created_at")
-      .offset(offset)
-      .limit(limit)
-      .execute()
+
+    page = await xata.db.subscriber
+      .filter({
+        verified: 1,
+        tech_subscribed: 1,
+      })
+      .sort("xata.createdAt", "asc")
+      .getPaginated({
+        pagination: { 
+          size: limit,
+          offset
+        }
+      })
+
+    console.log("tech_subscribed: ", page)
   }
   else if (category === "web") {
-    subscribers = await TiroRds.db
-      .selectFrom("subscriber")
-      .selectAll()
-      .where("verified", "=", 1)
-      .where("web_subscribed", "=", 1)
-      .orderBy("created_at")
-      .offset(offset)
-      .limit(limit)
-      .execute()
+    page = await xata.db.subscriber
+      .filter({
+        verified: 1,
+        web_subscribed: 1,
+      })
+      .sort("xata.createdAt", "asc")
+      .getPaginated({
+        pagination: { 
+          size: limit,
+          offset
+        }
+      })
+
+    console.log("web_subscribed: ", page)
   }
-  else if (category === "ai") {
-    subscribers = await TiroRds.db
-      .selectFrom("subscriber")
-      .selectAll()
-      .where("verified", "=", 1)
-      .where("crypto_subscribed", "=", 1)
-      .orderBy("created_at")
-      .offset(offset)
-      .limit(limit)
-      .execute()
+  else if (category === "crypto") {
+    page = await xata.db.subscriber
+      .filter({
+        verified: 1,
+        crypto_subscribed: 1,
+      })
+      .sort("xata.createdAt", "asc")
+      .getPaginated({
+        pagination: { 
+          size: limit,
+          offset
+        }
+      })
+
+    console.log("crypto_subscribed: ", page)
   }
   
-  return subscribers
+  return page?.records
 }
 
 
@@ -72,16 +90,16 @@ export async function handler(_: any) {
 
   let batchIndex = 0
   const limit = 50
-  let subscribers = []
+  let subscribers;
 
   try {
     do {
       console.log(`INFO: (${category}) started sending emails for the batch index ${batchIndex}`)
 
       subscribers = await getSubscribersByCategory(
-        category, batchIndex * limit, limit) as SubscriberTable[]
+        category, batchIndex * limit, limit)
   
-      if (!subscribers) {
+      if (!subscribers || subscribers.length === 0) {
         console.log(`(${category}): No subscribers found.`)
         return
       }
@@ -89,21 +107,24 @@ export async function handler(_: any) {
       let sentCount = 0
     
       for(const subscriber of subscribers) {
-        const unsubscribeEndpoint 
-          = await generateCustomUnsubscribeEndpoint(subscriber.email_address, "tech")
-    
-        const emailCommand = new SendTemplatedEmailCommand({
-          "Source": sender,
-          "Template": `daily-${category}-template-${tomorrowStr}`,
-          "Destination": {
-            "ToAddresses": [subscriber.email_address]
-          },
-          "TemplateData": 
-            `{ \"dynamicUnsubscribeEndpoint\":\"${unsubscribeEndpoint}\" }`
-        })
+        
+        if (subscriber.email_address) {
+          const unsubscribeEndpoint 
+            = await generateCustomUnsubscribeEndpoint(subscriber.email_address, "tech")
       
-        await ses.send(emailCommand)
-        sentCount++
+          const emailCommand = new SendTemplatedEmailCommand({
+            "Source": sender,
+            "Template": `daily-${category}-template-${tomorrowStr}`,
+            "Destination": {
+              "ToAddresses": [subscriber.email_address]
+            },
+            "TemplateData": 
+              `{ \"dynamicUnsubscribeEndpoint\":\"${unsubscribeEndpoint}\" }`
+          })
+        
+          await ses.send(emailCommand)
+          sentCount++
+        }
       }
 
       console.log(`INFO: (${category}) batch index ${batchIndex} completed.`)
