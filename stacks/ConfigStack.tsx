@@ -1,48 +1,48 @@
 import { Config, StackContext } from "sst/constructs"
-import { Secret } from "aws-cdk-lib/aws-secretsmanager"
 
 export function ConfigStack({ stack }: StackContext) {
-
-  const cipherSecrets = Secret.fromSecretNameV2(
-    stack,
-    'cipherSecrets',
-    'techmatome/cipher',
-  )
-
-  const cipherAlgo = cipherSecrets.secretValueFromJson('cipherAlgo').toString()
-  const cipherKey = cipherSecrets.secretValueFromJson('cipherKey').toString()
-  const cipherIv = cipherSecrets.secretValueFromJson('cipherIv').toString()
   
+  if (!process.env.PUBLIC_DOMAIN) {
+    throw new Error("PUBLIC_DOMAIN is not set")
+  }
+
   const domainParam = new Config.Parameter(stack, "PUBLIC_DOMAIN", {
     value: 
       stack.stage === "prod" 
-      ? `https://techmatome.com` 
+      ? process.env.PUBLIC_DOMAIN 
       : `http://localhost:3000`,
   })
 
+  if (!process.env.CIPHER_ALGO) {
+    throw new Error("CIPHER_ALGO is not set")
+  }
+
   const cipherAlgoParam = new Config.Parameter(stack, "PUBLIC_CIPHER_ALGO", {
-    value: cipherAlgo,
+    value: process.env.CIPHER_ALGO,
   })
+
+
+  if (!process.env.CIPHER_KEY) {
+    throw new Error("CIPHER_KEY is not set")
+  }
 
   const cipherKeyParam = new Config.Parameter(stack, "PUBLIC_CIPHER_KEY_STR", {
-    value: cipherKey,
+    value: process.env.CIPHER_KEY,
   })
+
+  if (!process.env.CIPHER_IV) {
+    throw new Error("CIPHER_IV is not set")
+  }
 
   const cipherIvParam = new Config.Parameter(stack, "PUBLIC_CIPHER_IV_STR", {
-    value: cipherIv,
+    value: process.env.CIPHER_IV,
   })
 
-  const xataApiKey = 
-    Secret.fromSecretNameV2(
-      stack,
-      'xataApiKey',
-      'techmatome/xata'
-    )
-    .secretValueFromJson("xataApiKey")
-    .toString()
-
+  if (!process.env.DB_API_KEY) {
+    throw new Error("DB_API_KEY is not set")
+  }
   const xataApiKeyParam = new Config.Parameter(stack, "DB_API_KEY", {
-    value: xataApiKey,
+    value: process.env.DB_API_KEY,
   })
 
   return {
