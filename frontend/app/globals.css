@@ -12,7 +12,7 @@ body {
 main {
   display: flex;
   flex-direction: column;
-  padding: 1.65rem 1rem;
+  padding: 3rem 1rem;
   text-align: center;
   width: 100%;
   max-width: 43.75rem;
@@ -72,7 +72,7 @@ main {
  *--------------------------------------------*/
 
 .mobile-nav-open span:nth-child(1) {
-  top: 7px;
+  top: 8px;
   rotate: -150grad;
 }
 .mobile-nav-open span:nth-child(3) {
@@ -138,27 +138,27 @@ input[type="checkbox"]:checked + label:before {
  *--------------------------------------------*/
 
 .archives icon {
-  margin-top: 1.6rem;
-  padding-bottom: 1.4rem;
-  font-size: xx-large;
+  margin: 2rem 0 2.6rem 0;
+  font-size: 2.625rem;
   display: flex;
   justify-content: center;
 }
 .archives h1 {
-  padding-bottom: 1.4rem;
-  font-weight: 600;
-  font-size: medium;
+  font-size: 1.25rem;
+  font-weight: 500;
   text-align: center;
 }
 .archives h2 {
-  padding-bottom: 1.4rem;
-  font-weight: 600;
-  font-size: large;
-  text-align: center;
+  font-size: 1.25rem;
+  margin: 2rem 0;
+  font-weight: 500;
 }
-.archives h2 a {
+.archives h2 > a {
   text-decoration: underline;
 }
 .archives article p {
+  font-size: 1rem;
+  line-height: 1.75;
+  font-weight: 400;
   padding-bottom: 1.4rem;
 }

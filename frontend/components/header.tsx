@@ -12,10 +12,10 @@ export default function Header() {
 
   return (
     <>
-      <header className="w-full flex justify-between flex-none items-center p-2">
+      <header className="w-full flex justify-between flex-none items-center p-5">
         <h1>
           <Link href={"/"}>
-            <h1 className="ml-4 font-medium">Techまとめ</h1>
+            <h1 className="font-medium">Techまとめ</h1>
           </Link>
         </h1>
 
@@ -33,9 +33,9 @@ export default function Header() {
             + (mobileNavOpen ? " mobile-nav-open" : "")
           }
         >
-          <span className="block h-[2px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute top-0"></span>
-          <span className="block h-[2px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute"></span>
-          <span className="block h-[2px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute bottom-0"></span>
+          <span className="block h-[1px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute top-0"></span>
+          <span className="block h-[1px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute"></span>
+          <span className="block h-[1px] w-full bg-[black] transition-all ease-in-out duration-[420ms] absolute bottom-0"></span>
         </label>
       </header>
       {/* nav for mobile */}
