@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test": "DB_API_KEY=key DB_BRANCH=test vitest",
     "dev": "sst bind next dev",
     "build": "sst bind next build",
     "start": "sst bind next start",
@@ -14,7 +15,9 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^0.32.0",
     "constructs": "10.1.156",
-    "sst": "^2.8.6"
+    "sst": "^2.8.6",
+    "vitest": "^0.32.0"
   }
 }
