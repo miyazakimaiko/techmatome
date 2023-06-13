@@ -2,8 +2,7 @@ import { Subscriber } from "@/interfaces/subscriber"
 
 export default async function addUpdateSubscriber(isSubscribed: boolean, subscriber: Subscriber): Promise<any> {
   return new Promise(async (resolve, reject) => {
-    const updateEndpoint = process.env.NEXT_PUBLIC_MAIN_API
-    const createEndpoint = process.env.NEXT_PUBLIC_MAIN_API
+    const requestEndpoint = process.env.NEXT_PUBLIC_MAIN_API
     let payload
   
     const body = {
@@ -14,12 +13,12 @@ export default async function addUpdateSubscriber(isSubscribed: boolean, subscri
     }
     
     if (isSubscribed) {
-      payload = await fetch(`${updateEndpoint}/update?id=${subscriber.id}`, {
+      payload = await fetch(`${requestEndpoint}/update?id=${subscriber.id}`, {
         method: "PATCH",
         body: JSON.stringify(body),
       })
     } else {
-      payload = await fetch(`${createEndpoint}/create`, {
+      payload = await fetch(`${requestEndpoint}/create`, {
         method: "POST",
         body: JSON.stringify(body),
       })
