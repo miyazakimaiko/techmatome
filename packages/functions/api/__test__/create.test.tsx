@@ -1,5 +1,7 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import * as create from '../create'
+import { creationSuccessResponse, errorResponse } from '../common/responses'
+import { BadRequestError } from '../common/errors'
 
 describe('Testing SubscriberCreationService', () => {
 
@@ -19,6 +21,15 @@ describe('Testing SubscriberCreationService', () => {
       send: () => ({})
     }
     service = create.SubscriberCreationService(mockDbClient, mockSnsClient)
+
+    vi.mock("sst/node/topic", () => {
+      const Topic = {
+        SubscriberCreationTopic: {
+          topicArn: "test"
+        }
+      }
+      return { Topic }
+    })
   })
 
   afterEach(() => {
@@ -113,7 +124,6 @@ describe('Testing SubscriberCreationService', () => {
       mockDbClient.db.subscriber.create = () => {
         return {"invalid_email_address": "test"}
       }
-      
       expect(() => service.createSubscriber({
         email_address: "test",
         tech_subscribed: 1
@@ -124,7 +134,6 @@ describe('Testing SubscriberCreationService', () => {
       mockDbClient.db.subscriber.create = () => {
         return {"email_address": "test"}
       }
-      
       const result = await service.createSubscriber({
         email_address: "test",
         tech_subscribed: 1
@@ -134,23 +143,11 @@ describe('Testing SubscriberCreationService', () => {
   })
 
   describe('Testing sendSubscriberCreationTopic method', () => {
-
-    beforeEach(() => {
-      vi.mock("sst/node/topic", () => {
-        const Topic = {
-          SubscriberCreationTopic: {
-            topicArn: "test"
-          }
-        }
-        return { Topic }
-      })
-    })
       
     it('throws error if snsClient.send throws error', async () => {
       mockSnsClient.send = () => {
         throw new Error('test')
       }
-      
       expect(() => service.sendSubscriberCreationTopic({
         email_address: "test",
         tech_subscribed: 1
@@ -161,12 +158,43 @@ describe('Testing SubscriberCreationService', () => {
       mockSnsClient.send = () => {
         return {"email_address": "test"}
       }
-      
       const result = await service.sendSubscriberCreationTopic({
         email_address: "test",
         tech_subscribed: 1
       })
       expect(result).toStrictEqual({"email_address": "test"})
+    })
+  })
+
+  describe('Testing handler method returning values', () => {
+
+    it('throws error if event is invalid', async () => {
+      const event = {
+        body: JSON.stringify({
+          "invalid_key": "test",
+          "tech_subscribed": 1
+        })
+      }
+      const result = await service.main(event)
+      const errRes = errorResponse(new BadRequestError('Invalid body'))
+
+      expect(result).toStrictEqual(errRes)
+    })
+
+    it('returns response if event is valid', async () => {
+      mockDbClient.db.subscriber.create = () => {
+        return {"email_address": "test"}
+      }
+      const event = {
+        body: JSON.stringify({
+          "email_address": "test",
+          "tech_subscribed": 1
+        })
+      }
+      const result = await service.main(event)
+      const successRes = creationSuccessResponse("created")
+
+      expect(result).toStrictEqual(successRes)
     })
   })
 })
