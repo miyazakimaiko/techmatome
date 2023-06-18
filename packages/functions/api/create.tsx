@@ -2,7 +2,8 @@ import Ajv from "ajv"
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns"
 import { Topic } from "sst/node/topic"
 import { XataClient } from "../../xata"
-import { BadRequestError } from "../../core/errors"
+import { BadRequestError } from "./common/errors"
+import { errorResponse, creationSuccessResponse } from "./common/responses"
 
 const xata = new XataClient({ 
   apiKey: process.env.DB_API_KEY,
@@ -12,6 +13,15 @@ const xata = new XataClient({
 const sns = new SNSClient({
   region: "eu-west-1",
 }) 
+
+declare module "sst/node/topic" {
+  export interface TopicResources {
+    "SubscriberCreationTopic": {
+      topicArn: string
+      topicSecretArn: string
+    }
+  }
+}
 
 export function SubscriberCreationService(dbClient: any, snsClient: any) {
 
@@ -54,21 +64,17 @@ export function SubscriberCreationService(dbClient: any, snsClient: any) {
     return await snsClient.send(command)
   }
 
-  function successResponse() {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ 
-        success: true,
-        type: "created" 
-      }),
-    }
-  }
-
-  function errorResponse(e: any) {
-    return {
-      statusCode: e.status || 500,
-      type: e.name || "InternalServerError",
-      message: e.message || "Internal server error",
+  async function main(event: any) {
+    try {
+      const eventBody = await validateEventBody(event)
+      const creationRes = await createSubscriber(eventBody)
+      
+      await sendSubscriberCreationTopic(creationRes.email_address)
+    
+      return creationSuccessResponse("created")
+      
+    } catch (e: any) {
+      return errorResponse(e)
     }
   }
 
@@ -76,36 +82,12 @@ export function SubscriberCreationService(dbClient: any, snsClient: any) {
     validateEventBody,
     createSubscriber,
     sendSubscriberCreationTopic,
-    successResponse,
-    errorResponse,
+    main
   }
 }
 
-export const service = SubscriberCreationService(xata, sns)
+const service = SubscriberCreationService(xata, sns)
 
 export async function handler(event: any) {
-  try {
-    const eventBody = await service
-      .validateEventBody(event)
-
-    const creationRes = await service
-      .createSubscriber(eventBody)
-    
-    await service
-      .sendSubscriberCreationTopic(creationRes.email_address)
-  
-    return service.successResponse()
-    
-  } catch (e: any) {
-    return service.errorResponse(e)
-  }
-}
-
-declare module "sst/node/topic" {
-  export interface TopicResources {
-    "SubscriberCreationTopic": {
-      topicArn: string
-      topicSecretArn: string
-    }
-  }
+  await service.main(event)
 }
