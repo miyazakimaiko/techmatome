@@ -1,28 +1,51 @@
 import { XataClient } from "../../xata"
+import { BadRequestError, NotFoundError } from "./common/errors"
+import { findSuccessResponse, errorResponse } from "./common/responses"
 
 const xata = new XataClient({ apiKey: process.env.DB_API_KEY })
 
-export async function handler(event: any) {
-  try {
-    const { email } = event.queryStringParameters
+export function SubscriberFindService(dbClient: any) {
 
-    const subscribers = await xata.db.subscriber
+  async function validateEventQueryStringParam(event: any) {
+    if (!event.queryStringParameters.email) {
+      throw new BadRequestError("Email query string parameter is required")
+    }
+    return event.queryStringParameters
+  }
+
+  async function findSubscriber(email: string) {
+    const subscribers = await dbClient.db.subscriber
       .filter({ email_address: email })
       .getMany()
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ 
-        found: Boolean(subscribers[0]),
-        data: subscribers[0]
-      })
+    if (!subscribers[0]) {
+      throw new NotFoundError("Could not find subscriber")
     }
 
-  } catch (e: any) {
-    console.error(e)
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: e.message }),
+    return subscribers[0]
+  }
+
+  async function main(event: any) {
+    try {
+      const { email } = await validateEventQueryStringParam(event)
+      const subscriber = await findSubscriber(email)
+  
+      return findSuccessResponse(subscriber)
+  
+    } catch (e: any) {
+      return errorResponse(e)
     }
   }
+
+  return {
+    validateEventQueryStringParam,
+    findSubscriber,
+    main,
+  }
+}
+
+const service = SubscriberFindService(xata)
+
+export async function handler(event: any) {
+  service.main(event)
 }
