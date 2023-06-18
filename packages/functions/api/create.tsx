@@ -3,7 +3,7 @@ import { SNSClient, PublishCommand } from "@aws-sdk/client-sns"
 import { Topic } from "sst/node/topic"
 import { XataClient } from "../../xata"
 import { BadRequestError } from "./common/errors"
-import { errorResponse, creationSuccessResponse } from "./common/responses"
+import { errorResponse, successResponse } from "./common/responses"
 
 const xata = new XataClient({ 
   apiKey: process.env.DB_API_KEY,
@@ -71,7 +71,7 @@ export function SubscriberCreationService(dbClient: any, snsClient: any) {
       
       await sendSubscriberCreationTopic(creationRes.email_address)
     
-      return creationSuccessResponse("created")
+      return successResponse("created")
       
     } catch (e: any) {
       return errorResponse(e)

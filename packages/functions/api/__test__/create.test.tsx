@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import * as create from '../create'
-import { creationSuccessResponse, errorResponse } from '../common/responses'
+import { successResponse, errorResponse } from '../common/responses'
 import { BadRequestError } from '../common/errors'
 
 describe('Testing SubscriberCreationService', () => {
@@ -192,7 +192,7 @@ describe('Testing SubscriberCreationService', () => {
         })
       }
       const result = await service.main(event)
-      const successRes = creationSuccessResponse("created")
+      const successRes = successResponse("created")
 
       expect(result).toStrictEqual(successRes)
     })

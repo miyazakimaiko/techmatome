@@ -1,4 +1,4 @@
-export function creationSuccessResponse(type: string) {
+export function successResponse(type: string) {
   return {
     statusCode: 200,
     body: JSON.stringify({ 
