@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "DB_API_KEY=key DB_BRANCH=test vitest",
+    "test": "DB_API_KEY=key DB_BRANCH=test SST_APP=techmatome SST_STAGE=local vitest",
     "dev": "sst bind next dev",
     "build": "sst bind next build",
     "start": "sst bind next start",
