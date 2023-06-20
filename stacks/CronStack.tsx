@@ -10,7 +10,7 @@ export function CronStack({ stack }: StackContext) {
     xataApiKeyParam
   } = use(ConfigStack)
 
-  const techCronSchecule = "cron(16 0 ? * SUN-THU *)"
+  const techCronSchecule = "cron(0 21 ? * SUN-THU *)"
   const webCronSchecule = "cron(0 21 ? * SUN-THU *)"
   const aiCronSchecule = "cron(0 21 ? * SUN-THU *)"
 
