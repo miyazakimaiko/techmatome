@@ -27,7 +27,7 @@ This was just the beginning, and I came up with the idea to translate those news
 
 **Frontend:** Typescript, Next.js, TailwindCSS
 
-**Backend:** Node.js, [Xata](https://xata.io/)
+**Backend:** Typescript, Node.js, [Xata](https://xata.io/)
 
 **Test:** [Vitest](https://vitest.dev/)
 
