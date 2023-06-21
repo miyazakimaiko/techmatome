@@ -7,7 +7,7 @@
     "typecheck": "tsc -noEmit"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/node18": "^2.0.1",
     "@types/aws-lambda": "^8.10.115",
     "@types/libmime": "^5.0.0",
     "@types/node": "^20.1.0",
