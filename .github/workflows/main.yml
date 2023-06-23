@@ -18,8 +18,14 @@ jobs:
       with:
         node-version: 18.x
 
-    - name: Install dependencies
+    - name: Install dependencies on root
       run: npm install
+      
+    - name: Install dependencies on package
+      run: |
+        cd packages
+        npm install
+        cd ..
 
     - name: Run unit tests
       run: npm test
