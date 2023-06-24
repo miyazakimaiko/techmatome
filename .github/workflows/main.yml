@@ -11,15 +11,21 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v2.5.2
       with:
-        node-version: 18.x
+        node-version: 18
 
-    - name: Install dependencies
-      run: npm install
+    - name: Install dependencies on root
+      run: npm ci
+      
+    - name: Install dependencies on package
+      run: |
+        cd packages
+        npm ci
+        cd ..
 
     - name: Run unit tests
       run: npm test
