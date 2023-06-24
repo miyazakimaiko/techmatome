@@ -17,6 +17,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 18
+        
+    - name: Set up AWS CLI
+      uses: aws-actions/aws-cli@v2
+      with:
+        version: 2.x
 
     - name: Install dependencies on root
       run: npm ci
@@ -25,8 +30,14 @@ jobs:
       run: |
         cd packages
         npm ci
-        cd ..
-
+        cd .. 
+        
+    - name: Configure AWS credentials
+      run: |
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws configure set default.region ${{ secrets.AWS_DEFAULT_REGION }}
+        
     - name: Run unit tests
       run: npm test
       env:
