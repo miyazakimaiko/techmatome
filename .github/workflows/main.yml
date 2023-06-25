@@ -28,6 +28,12 @@ jobs:
         npm ci
         cd .. 
         
+    - name: Install dependencies on frontend
+      run: |
+        cd frontend
+        npm ci
+        cd .. 
+        
     - name: Configure AWS credentials
       run: |
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
