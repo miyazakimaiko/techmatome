@@ -18,23 +18,23 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 18
-
-    - name: Install dependencies on root
+        
+    - name: Install dependencies on frontend
       run: |
-        npm cache clean --force
-        npm ci
+        cd frontend
+        npm install
+        cd .. 
       
     - name: Install dependencies on package
       run: |
         cd packages
         npm ci
         cd .. 
-        
-    - name: Install dependencies on frontend
+                
+    - name: Install dependencies on root
       run: |
-        cd frontend
+        npm cache clean --force
         npm ci
-        cd .. 
         
     - name: Configure AWS credentials
       run: |
