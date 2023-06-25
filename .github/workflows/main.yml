@@ -44,7 +44,7 @@ jobs:
         echo PUBLIC_DOMAIN=${{ secrets.PUBLIC_DOMAIN }} >> .env
         echo CIPHER_ALGO=${{ secrets.CIPHER_ALGO }} >> .env
         echo CIPHER_KEY=${{ secrets.CIPHER_KEY }} >> .env
-        echo CIPHER_IV=${{ secrets.CIPHER_IV }} >> .env
+        echo CIPHER_IV="${{ secrets.CIPHER_IV }}" >> .env
         echo DB_BRANCH=${{ secrets.DB_BRANCH }} >> .env
         cat .env
         
