@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies on root
       run: |
         npm cache clean --force
-        npm ci
+        npm install
       
     - name: Install dependencies on package
       run: |
