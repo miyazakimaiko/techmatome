@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    environment: prod
     runs-on: ubuntu-latest
 
     steps:
@@ -25,28 +26,54 @@ jobs:
       run: |
         cd packages
         npm ci
-        cd ..
-
+        cd .. 
+        
+    - name: Install dependencies on frontend
+      run: |
+        cd frontend
+        npm ci
+        cd .. 
+        
+    - name: Configure AWS credentials
+      run: |
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws configure set default.region ${{ secrets.AWS_DEFAULT_REGION }}
+        
+    - name: 'Create env file'
+      run: |
+        touch .env
+        echo DB_API_KEY=${{ secrets.DB_API_KEY }} >> .env
+        echo DB_BRANCH=${{ secrets.DB_BRANCH }} >> .env
+        echo AWS_ACCT_ID=${{ secrets.AWS_ACCT_ID }} >> .env
+        echo WORKMAIL_ORG_ID=${{ secrets.WORKMAIL_ORG_ID }} >> .env
+        echo PUBLIC_DOMAIN=${{ secrets.PUBLIC_DOMAIN }} >> .env
+        echo CIPHER_ALGO=${{ secrets.CIPHER_ALGO }} >> .env
+        echo CIPHER_KEY=${{ secrets.CIPHER_KEY }} >> .env
+        echo CIPHER_IV="${{ secrets.CIPHER_IV }}" >> .env
+        echo DB_BRANCH=${{ secrets.DB_BRANCH }} >> .env
+        cat .env
+        
     - name: Run unit tests
       run: npm test
-      env:
-        DB_API_KEY: ${{ secrets.DB_API_KEY }}
-        DB_BRANCH: ${{ secrets.DB_BRANCH }}
-        AWS_ACCT_ID: ${{ secrets.AWS_ACCT_ID }}
-        WORKMAIL_ORG_ID: ${{ secrets.WORKMAIL_ORG_ID }}
-        PUBLIC_DOMAIN: ${{ secrets.PUBLIC_DOMAIN }}
-        CIPHER_ALGO: ${{ secrets.CIPHER_ALGO }}
-        CIPHER_KEY: ${{ secrets.CIPHER_KEY }}
-        CIPHER_IV: ${{ secrets.CIPHER_IV }}
+#       env:
+#         DB_API_KEY: ${{ secrets.DB_API_KEY }}
+#         DB_BRANCH: ${{ secrets.DB_BRANCH }}
+#         AWS_ACCT_ID: ${{ secrets.AWS_ACCT_ID }}
+#         WORKMAIL_ORG_ID: ${{ secrets.WORKMAIL_ORG_ID }}
+#         PUBLIC_DOMAIN: ${{ secrets.PUBLIC_DOMAIN }}
+#         CIPHER_ALGO: ${{ secrets.CIPHER_ALGO }}
+#         CIPHER_KEY: ${{ secrets.CIPHER_KEY }}
+#         CIPHER_IV: ${{ secrets.CIPHER_IV }}
 
     - name: Deploy to prod
       run: npx --no-install sst deploy --stage prod
-      env:
-        DB_API_KEY: ${{ secrets.DB_API_KEY }}
-        DB_BRANCH: ${{ secrets.DB_BRANCH }}
-        AWS_ACCT_ID: ${{ secrets.AWS_ACCT_ID }}
-        WORKMAIL_ORG_ID: ${{ secrets.WORKMAIL_ORG_ID }}
-        PUBLIC_DOMAIN: ${{ secrets.PUBLIC_DOMAIN }}
-        CIPHER_ALGO: ${{ secrets.CIPHER_ALGO }}
-        CIPHER_KEY: ${{ secrets.CIPHER_KEY }}
-        CIPHER_IV: ${{ secrets.CIPHER_IV }}
+#       env:
+#         DB_API_KEY: ${{ secrets.DB_API_KEY }}
+#         DB_BRANCH: ${{ secrets.DB_BRANCH }}
+#         AWS_ACCT_ID: ${{ secrets.AWS_ACCT_ID }}
+#         WORKMAIL_ORG_ID: ${{ secrets.WORKMAIL_ORG_ID }}
+#         PUBLIC_DOMAIN: ${{ secrets.PUBLIC_DOMAIN }}
+#         CIPHER_ALGO: ${{ secrets.CIPHER_ALGO }}
+#         CIPHER_KEY: ${{ secrets.CIPHER_KEY }}
+#         CIPHER_IV: ${{ secrets.CIPHER_IV }}
