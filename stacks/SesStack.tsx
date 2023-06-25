@@ -30,7 +30,8 @@ export async function SesStack({ stack }: StackContext) {
         },
         {
           workmailAction: {
-            organizationArn: `arn:aws:workmail:${stack.region}:${process.env.AWS_ACCT_ID}:organization/${process.env.WORKMAIL_ORG_ID}`,
+            organizationArn: 
+              `arn:aws:workmail:${stack.region}:${process.env.AWS_ACCT_ID}:organization/${process.env.WORKMAIL_ORG_ID}`,
           },
         },
       ],
