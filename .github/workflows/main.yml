@@ -20,7 +20,9 @@ jobs:
         node-version: 18
 
     - name: Install dependencies on root
-      run: npm ci
+      run: |
+        npm cache clean --force
+        npm ci
       
     - name: Install dependencies on package
       run: |
