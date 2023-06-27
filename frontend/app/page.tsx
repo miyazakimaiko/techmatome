@@ -1,14 +1,13 @@
 import SubscribeSection from '@/components/subscribeSection'
-import Image from 'next/image'
 
 export default function Home() {
 
   const title = (
     <div className="flex flex-col items-center justify-between pt-4 sm:pt-8">
       <h1 className="text-3xl font-semibold mb-4">
-        Techまとめ速報
+        Techまとめ
       </h1>
-      <p className="text-sm pt-2">5分でサクッと読めるテックメルマガ</p>
+      <p className="text-sm pt-2">毎朝5分でサクッと読む最新情報</p>
     </div>
   )
 
@@ -22,19 +21,16 @@ export default function Home() {
   )
 
   const introText = (
-    <div className="text-center pb-3">
+    <div className="text-center">
       <p className="pb-4">
-        最新情報を手軽に読みたい人、<br/>
+        最新情報をもっと手軽に読みたい人、<br/>
         情報過多に疲れた人のための<br/>
-        完全無料メルマガ📩
+        完全無料テックメルマガ📩
       </p>
       <p className="pb-4">
         テクノロジー、プログラミング、<br/>
         AIに関する英語の最新記事やブログを<br/>
         「翻訳」「要約」して毎朝お届けします🎁
-      </p>
-      <p className="pb-6">
-        最新情報をもっとシンプルに
       </p>
     </div>
   )

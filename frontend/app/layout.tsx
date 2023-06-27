@@ -33,7 +33,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       </Script>
       <body 
         suppressHydrationWarning={true}
-        className="flex min-h-screen flex-col items-center justify-between text-base leading-7"
+        className="flex min-h-screen flex-col items-center justify-between text-base text-black leading-7"
       >
         {children}
         <Footer/>

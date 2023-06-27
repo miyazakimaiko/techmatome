@@ -40,8 +40,8 @@ export default function Article (props: any) {
     )
   
     const introText = (
-      <div className="text-center pb-5 sm:leading-7">
-        <p className="pb-6">
+      <div className="text-center pb-3 sm:leading-7">
+        <p>
           無料でサクッと読める、<br/>Geek・エンジニアのためのメルマガ📩
           <br/>英語の最新記事やブログを翻訳、要約して毎朝お届けします🎁
         </p>

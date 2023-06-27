@@ -17,7 +17,7 @@ module.exports = {
     },
     colors: {
       themeBlue: "#18F7E6",
-      black: "#202020"
+      black: "#3e3d4e"
     }
   },
   plugins: [],
