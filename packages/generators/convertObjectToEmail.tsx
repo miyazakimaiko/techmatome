@@ -187,6 +187,7 @@ export default async function convertObjectToEmailHtml(contents: Contents)
       sectionsBlock += generateSectionHeadingBlock(section.icon, section.heading)
   
       for(const article of section.articles) {
+        console.log({article})
         sectionsBlock += generateArticleBlock(article)
       }
     }

@@ -3,6 +3,10 @@ import { XataClient } from "../../xata"
 
 const xata = new XataClient({ apiKey: process.env.DB_API_KEY })
 
+export function SubscriberDeletionService(dbClient: any) {
+  
+}
+
 async function deleteSubscriberById(id: string) {
   return await xata.db.subscriber.delete(id)
 }
