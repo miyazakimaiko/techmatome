@@ -4,7 +4,7 @@ export default function Home() {
 
   const title = (
     <div className="flex flex-col items-center justify-between pt-4 sm:pt-8">
-      <p className="text-sm pb-2">＼最新情報をもっとシンプルに／</p>
+      <p className="text-sm pb-2">＼ 最新情報をもっとシンプルに ／</p>
       <h1 className="text-3xl font-semibold mb-3">
         Techまとめ
       </h1>
